@@ -1,3 +1,74 @@
+<?php
+include "db_conn.php";
+
+if (isset($_POST["btn"])) {
+	$user_id = $_POST["user_id"];
+    $name = $_POST["name"];
+    $mobile = $_POST["mobile"];
+    $email = $_POST["email"];
+    $bname = $_POST["bname"];
+    $bcategory = $_POST["bcategory"];
+    $baddress = $_POST["baddress"];
+    $password = $_POST["password"];
+    $repassword = $_POST["repassword"];
+
+    // Prepare the SQL query
+	$sql = "INSERT INTO tbf_mem (name, mobile, email, bname, bcategory, baddress, password, repassword,user_id) VALUES ('$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id')";
+	
+	  
+
+    // Execute the query
+    if ($conn->query($sql) === TRUE) {  
+        // Redirect user to members-list.php after successful form submission
+        header("Location: members-list.php");
+        exit();
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    // Close the connection
+    $conn->close();
+}
+?>
+
+
+<?php
+include "db_conn.php";
+$sql = "SELECT * FROM tbf_mem";
+$result=$conn->query($sql);
+$rowCount = $result->num_rows;
+?>
+
+<?php
+include "db_conn.php";
+
+$sql = "SELECT * FROM tbf_mem ORDER BY User_ID DESC LIMIT 1";
+$query = mysqli_query($conn, $sql);
+
+if ($query && mysqli_num_rows($query) > 0) {
+    $row = mysqli_fetch_assoc($query);
+
+    if (!isset($row['User_id']) || $row['User_id'] == '') {
+        // If no previous invoices exist, start with TBF001
+        $invoice = "TBF001";
+    } else {
+        // If previous invoices exist, increment the last invoice number
+        $invoice = $row['User_id'];
+        // Extract the numeric part of the invoice number
+        $numericPart = substr($invoice, 3); // Remove the "TBF" prefix
+        $autoIncrement = intval($numericPart);
+        $autoIncrement++;
+        // Create the new invoice number with the incremented value
+        $invoice = "TBF" . str_pad($autoIncrement, 3, '0', STR_PAD_LEFT);
+    }
+} else {
+    // If no previous invoices exist, start with TBF001
+    $invoice = "TBF001";
+}
+
+echo $invoice; // This will output the incremented invoice number
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -536,196 +607,7 @@
 										class="alert-count">8</span>
 									<i class='bx bx-shopping-bag'></i>
 								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<a href="javascript:;">
-										<div class="msg-header">
-											<p class="msg-header-title">My Cart</p>
-											<p class="msg-header-badge">10 Items</p>
-										</div>
-									</a>
-									<div class="header-message-list">
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/11.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/02.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/03.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/04.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/05.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/06.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/07.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/08.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center gap-3">
-												<div class="position-relative">
-													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/09.png" class=""
-															alt="product image">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="cart-product-title mb-0">Men White T-Shirt</h6>
-													<p class="cart-product-price mb-0">1 X $29.00</p>
-												</div>
-												<div class="">
-													<p class="cart-price mb-0">$250</p>
-												</div>
-												<div class="cart-product-cancel"><i class="bx bx-x"></i>
-												</div>
-											</div>
-										</a>
-									</div>
-									<a href="javascript:;">
-										<div class="text-center msg-footer">
-											<div class="d-flex align-items-center justify-content-between mb-3">
-												<h5 class="mb-0">Total</h5>
-												<h5 class="mb-0 ms-auto">$489.00</h5>
-											</div>
-											<button class="btn btn-primary w-100">Checkout</button>
-										</div>
-									</a>
-								</div>
+								
 							</li>
 						</ul>
 					</div>
@@ -811,7 +693,7 @@
 											<center><img src="../assets/images/favicon.png" alt="" width="100"
 													class="mb-3"></center>
 
-													<form class="row g-3 needs-validation" novalidate="">
+													<form class="row g-3 needs-validation" novalidate="" method="post">
 														<div class="col-md-12">
 															<label for="bsValidation3" class="form-label">Upload Photo:</label>
 															<input id="fancy-file-upload" type="file" name="files" accept=".jpg, .png, image/jpeg, image/png" multiple>
@@ -820,43 +702,51 @@
 															 </div>
 														</div>
 														<div class="col-md-6">
+															<label for="bsValidation3" class="form-label">User_Id:</label>
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" value="<?php echo $invoice; ?>" name="user_id" required="" readonly>
+															
+														</div>
+														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">Name:</label>
-															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="">
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="" name="name">
 															<div class="invalid-feedback">
 																Please enter a valid name.
 															  </div>
 														</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">Mobile No:</label>
-															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="">
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="" name="mobile">
+
 															<div class="invalid-feedback">
 																Please enter a valid Mobile No.
 															  </div>
 														</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">Email:</label>
-															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="">
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="" name="email">
 															<div class="invalid-feedback">
 																Please enter a Email.
 															  </div>
 														</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">Business Name:</label>
-															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="">
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="" name="bname">
+
 															<div class="invalid-feedback">
 																Please enter a Business Name.
 															  </div>
 														</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">Business Category:</label>
-															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="">
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="" name="bcategory">
+
 															<div class="invalid-feedback">
 																Please enter a Business Category.
 															  </div>
 														</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">Business Address:</label>
-															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="">
+															<input type="text" class="form-control" id="bsValidation3" placeholder="" required="" name="baddress">
 															<div class="invalid-feedback">
 																Please enter a Business Address.
 															  </div>
@@ -864,20 +754,20 @@
 														<div class="col-6">
 															<label for="inputChoosePassword" class="form-label">Enter Password</label>
 															<div class="input-group" id="show_hide_password">
-																<input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+																<input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password" name="password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
 															</div>
 														</div>
 														<div class="col-6">
 															<label for="inputChoosePassword" class="form-label">Re-Enter Password</label>
 															<div class="input-group" id="show_hide_password">
-																<input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+																<input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password" name="repassword"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
 															</div>
 														</div>
 												  
 											
 													<div class="col-md-12 mt-5">
 															<div class="d-md-flex d-grid align-items-center gap-3">
-																<button type="submit" class="btn btn-primary px-4">Submit</button>
+																<button type="submit" class="btn btn-primary px-4" name="btn">Submit</button>
 															
 															</div>
 														</div>
@@ -894,117 +784,67 @@
 
 
 						<div class="table-responsive mt-3">
+						<?php
+        if(isset($_GET['msg'])){
+            $msg = $_GET['msg'];
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+           '.$msg.'
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+        }
+        ?>
 
 							<table id="example2" class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th>S.No</th>
-										<th>User ID</th>
-										<th>Profile Image</th>
-										<th>Name</th>
-										<th>Mobile</th>
-										<th>Email</th>
-										<th>Business Name</th>
-										<th>Business Category</th>
-										<th>Business Address</th>
-										<th>Action</th>
+										<th scope="col">S.No</th>
+										<th scope="col">User ID</th>
+										<th scope="col">Profile Image</th>
+										<th scope="col">Name</th>
+										<th scope="col">Mobile</th>
+										<th scope="col">Email</th>
+										<th scope="col">Business Name</th>
+										<th scope="col">Business Category</th>
+										<th scope="col">Business Address</th>
+										<th scope="col">Password</th>
+										<th scope="col">Re-Password</th>
+										<th scope="col">Action</th>
 									</tr>
 								</thead>
 								<tbody>
+								<?php
+      
+	  								if ($rowCount > 0) {
+									while ($row = $result->fetch_assoc()) {
+	  							?>
+  
+								
 									<tr>
-										<td>1</td>
-										<td>TBF001</td>
-										<td><img src="assets/user.png" alt="ssd" width="50"></td>
-										<td>Arun S</td>
-										<td>9876543210</td>
-										<td>arun@gmail.com</td>
-										<td>Nearlook</td>
-										<td>Digital Marketing</td>
-										<td>Puzhal Coffee Bar, Opp, Theni</td>
+										<td><?php echo $row['s_no']; ?></td>
+										<td><?php echo $row['user_id']; ?></td>
+										<td><?php echo $row['Profile_image']; ?></td>
+										<td><?php echo $row['name']; ?></td>
+										<td><?php echo $row['mobile']; ?></td>
+										<td><?php echo $row['email']; ?></td>
+										<td><?php echo $row['bname']; ?></td>
+										<td><?php echo $row['bcategory']; ?></td>
+										<td><?php echo $row['baddress']; ?></td>
+										<td><?php echo $row['password']; ?></td>
+										<td><?php echo $row['repassword']; ?></td>
 										<td>
-											<div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
+										  <a href="edit.php?user_id=<?php echo $row['user_id'] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										  <a href="delete.php?s_no=<?php echo $row['s_no'] ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
 										</td>
-									</tr>
+									 </tr>
+									 <?php
+									     }
+										}
+									 ?>
 
-									<tr>
-										<td>2</td>
-										<td>TBF002</td>
-										<td><img src="assets/user.png" alt="ssd" width="50"></td>
-										<td>Palpandi </td>
-										<td>9876543210</td>
-										<td>futurewayycomputers@gmail.com</td>
-										<td>Futurewayy Computers</td>
-										<td>System Sales and Service</td>
-										<td>Back to old bus stand, Theni</td>
-										<td>
-											<div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-										</td>
-									</tr>
-
-									<tr>
-										<td>1</td>
-										<td>TBF001</td>
-										<td><img src="assets/user.png" alt="ssd" width="50"></td>
-										<td>Arun S</td>
-										<td>9876543210</td>
-										<td>arun@gmail.com</td>
-										<td>Nearlook</td>
-										<td>Digital Marketing</td>
-										<td>Puzhal Coffee Bar, Opp, Theni</td>
-										<td>
-											<div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-										</td>
-									</tr>
-
-									<tr>
-										<td>1</td>
-										<td>TBF001</td>
-										<td><img src="assets/user.png" alt="ssd" width="50"></td>
-										<td>Arun S</td>
-										<td>9876543210</td>
-										<td>arun@gmail.com</td>
-										<td>Nearlook</td>
-										<td>Digital Marketing</td>
-										<td>Puzhal Coffee Bar, Opp, Theni</td>
-										<td>
-											<div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-										</td>
-									</tr>
-
-						
-
-
-
-
-
-
+									
+									
 								</tbody>
-								<tfoot>
-									<tr>
-										<th>S.No</th>
-										<th>User ID</th>
-										<th>Profile Image</th>
-										<th>Name</th>
-										<th>Mobile</th>
-										<th>Email</th>
-										<th>Business Name</th>
-										<th>Business Category</th>
-										<th>Business Address</th>
-										<th>Action</th>
-									</tr>
-								</tfoot>
+								
 							</table>
 						</div>
 					</div>

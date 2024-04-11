@@ -872,8 +872,6 @@
 						</div>
                         <hr/>
 
-                        
-
 						<div class="table-responsive mt-3">
                             
 							<table id="example2" class="table table-striped table-bordered">
@@ -889,117 +887,7 @@
                                         <th>Actions</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>1</td>
-										<td>Harikrishnan</td>
-										<td>Saloon & Spa</td>
-										<td>10000</td>
-										<td>New</td>
-										<td>Tier 1 Inside</td>
-                                        <td>Intrested to connect!!!</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-                                        </td>
-									</tr>
-
-                                    <tr>
-										<td>1</td>
-										<td>Harikrishnan</td>
-										<td>Saloon & Spa</td>
-										<td>10000</td>
-										<td>New</td>
-										<td>Tier 1 Inside</td>
-                                        <td>Intrested to connect!!!</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-                                        </td>
-									</tr>
-                                    <tr>
-										<td>1</td>
-										<td>Harikrishnan</td>
-										<td>Saloon & Spa</td>
-										<td>10000</td>
-										<td>New</td>
-										<td>Tier 1 Inside</td>
-                                        <td>Intrested to connect!!!</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-                                        </td>
-									</tr>
-                                    <tr>
-										<td>1</td>
-										<td>Harikrishnan</td>
-										<td>Saloon & Spa</td>
-										<td>10000</td>
-										<td>New</td>
-										<td>Tier 1 Inside</td>
-                                        <td>Intrested to connect!!!</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-                                        </td>
-									</tr>
-                                    <tr>
-										<td>1</td>
-										<td>Harikrishnan</td>
-										<td>Saloon & Spa</td>
-										<td>10000</td>
-										<td>New</td>
-										<td>Tier 1 Inside</td>
-                                        <td>Intrested to connect!!!</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-                                        </td>
-									</tr>
-                                    <tr>
-										<td>1</td>
-										<td>Harikrishnan</td>
-										<td>Saloon & Spa</td>
-										<td>10000</td>
-										<td>New</td>
-										<td>Tier 1 Inside</td>
-                                        <td>Intrested to connect!!!</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3"><i class="bx bxs-trash"></i></a>
-											</div>
-                                        </td>
-									</tr>
-    
-
-
-                                    
-
-
-								</tbody>
-								<tfoot>
-									<tr>
-									    <th>S.No</th>
-										<th>Member Name</th>
-										<th>Business Category</th>
-										<th>Referral Amount</th>
-										<th>Business Type</th>
-										<th>Referral Type</th>
-										<th>Comments</th>
-                                        <th>Actions</th>
-									</tr>
-								</tfoot>
+								
 							</table>
 						</div>
 					</div>

@@ -63,7 +63,7 @@
 					</a>
 				</li>
                 <li>
-					<a href="#" >
+					<a href="members-list.php" >
 						<div class="parent-icon"><i class="fa-solid fa-house"></i>
 						</div>
 						<div class="menu-title">Members List</div>
