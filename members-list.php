@@ -11,9 +11,18 @@ if (isset($_POST["btn"])) {
     $baddress = $_POST["baddress"];
     $password = $_POST["password"];
     $repassword = $_POST["repassword"];
+	$Profile_Image = $_FILES['image'];
+	print_r($_FILES['image']);
+	$img_loc = $_FILES['image']['tmp_name'];
+    $img_name = $_FILES['image']['name'];
+    $img_des = "uploads/".$img_name;
+    move_uploaded_file($img_loc,'uploads/'.$img_name);
+
+	mysqli_query($conn, "INSERT INTO tbf_mem (Profile_Image) VALUES ('$img_des')");
+
 
     // Prepare the SQL query
-	$sql = "INSERT INTO tbf_mem (name, mobile, email, bname, bcategory, baddress, password, repassword,user_id) VALUES ('$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id')";
+	$sql = "INSERT INTO tbf_mem (name, mobile, email, bname, bcategory, baddress, password, repassword, user_id, Profile_Image) VALUES ('$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id', '$img_des')";
 	
 	  
 
@@ -42,18 +51,18 @@ $rowCount = $result->num_rows;
 <?php
 include "db_conn.php";
 
-$sql = "SELECT * FROM tbf_mem ORDER BY User_ID DESC LIMIT 1";
+$sql = "SELECT * FROM tbf_mem ORDER BY user_id DESC LIMIT 1";
 $query = mysqli_query($conn, $sql);
 
 if ($query && mysqli_num_rows($query) > 0) {
     $row = mysqli_fetch_assoc($query);
 
-    if (!isset($row['User_id']) || $row['User_id'] == '') {
+    if (!isset($row['user_id']) || $row['user_id'] == '') {
         // If no previous invoices exist, start with TBF001
         $invoice = "TBF001";
     } else {
         // If previous invoices exist, increment the last invoice number
-        $invoice = $row['User_id'];
+        $invoice = $row['user_id'];
         // Extract the numeric part of the invoice number
         $numericPart = substr($invoice, 3); // Remove the "TBF" prefix
         $autoIncrement = intval($numericPart);
@@ -694,13 +703,11 @@ echo $invoice; // This will output the incremented invoice number
 													class="mb-3"></center>
 
 													<form class="row g-3 needs-validation" novalidate="" method="post">
-														<div class="col-md-12">
-															<label for="bsValidation3" class="form-label">Upload Photo:</label>
-															<input id="fancy-file-upload" type="file" name="files" accept=".jpg, .png, image/jpeg, image/png" multiple>
-															<div class="invalid-feedback">
-																Please upload a photo.
-															 </div>
-														</div>
+													<div class="mb-3">
+                										<label class="form-label">Upload_Picture:</label><br>
+            											 <input type="file" name="image" id="file">
+              											 
+            											</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">User_Id:</label>
 															<input type="text" class="form-control" id="bsValidation3" placeholder="" value="<?php echo $invoice; ?>" name="user_id" required="" readonly>
@@ -813,7 +820,7 @@ echo $invoice; // This will output the incremented invoice number
 								</thead>
 								<tbody>
 								<?php
-      
+								        
 	  								if ($rowCount > 0) {
 									while ($row = $result->fetch_assoc()) {
 	  							?>
@@ -822,7 +829,7 @@ echo $invoice; // This will output the incremented invoice number
 									<tr>
 										<td><?php echo $row['s_no']; ?></td>
 										<td><?php echo $row['user_id']; ?></td>
-										<td><?php echo $row['Profile_image']; ?></td>
+										<td><img src= <?php echo $row['Profile_Image']; ?> width = '200px'  height = '70px'></td>
 										<td><?php echo $row['name']; ?></td>
 										<td><?php echo $row['mobile']; ?></td>
 										<td><?php echo $row['email']; ?></td>
@@ -832,7 +839,7 @@ echo $invoice; // This will output the incremented invoice number
 										<td><?php echo $row['password']; ?></td>
 										<td><?php echo $row['repassword']; ?></td>
 										<td>
-										  <a href="edit.php?user_id=<?php echo $row['user_id'] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										  <a href="edit.php?s_no=<?php echo $row['s_no'] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										  <a href="delete.php?s_no=<?php echo $row['s_no'] ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
 										</td>
 									 </tr>

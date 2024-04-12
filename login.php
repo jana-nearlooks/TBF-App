@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
 
     // If not an admin, check if the user exists in the users table
-    $stmt = $conn->prepare("SELECT * FROM members_list WHERE email=? AND Password=?");
+    $stmt = $conn->prepare("SELECT * FROM tbf_mem WHERE email=? AND Password=?");
     $stmt->bind_param("ss", $email, $Password);
     $stmt->execute();
     $result = $stmt->get_result();
