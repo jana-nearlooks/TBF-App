@@ -11,24 +11,39 @@ if (isset($_POST["btn"])) {
     $baddress = $_POST["baddress"];
     $password = $_POST["password"];
     $repassword = $_POST["repassword"];
-	$Profile_Image = $_FILES['image'];
-	print_r($_FILES['image']);
-	$img_loc = $_FILES['image']['tmp_name'];
-    $img_name = $_FILES['image']['name'];
-    $img_des = "uploads/".$img_name;
-    move_uploaded_file($img_loc,'uploads/'.$img_name);
 
-	mysqli_query($conn, "INSERT INTO tbf_mem (Profile_Image) VALUES ('$img_des')");
+	  // Check if image is uploaded
+	  if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0){
+        $fileName = $_FILES["image"]["name"];
+        $fileSize = $_FILES["image"]["size"];
+        $tmpName = $_FILES["image"]["tmp_name"];
 
+        $validImageExtensions = ['jpg', 'jpeg', 'png'];
+        $imageExtension = explode('.', $fileName);
+        $imageExtension = strtolower(end($imageExtension));
+        if(!in_array($imageExtension, $validImageExtensions)){
+            echo "<script>alert('Invalid image extension');</script>";
+        }
+        else if($fileSize > 1000000){
+            echo "<script>alert('Image size is too large');</script>";
+        }
+        else{
+            $newImageName = uniqid();
+            $newImageName .= '.' .$imageExtension;
 
-    // Prepare the SQL query
-	$sql = "INSERT INTO tbf_mem (name, mobile, email, bname, bcategory, baddress, password, repassword, user_id, Profile_Image) VALUES ('$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id', '$img_des')";
-	
-	  
+            move_uploaded_file($tmpName,'uploads/'. $newImageName);
+            echo "<script>alert('Image uploaded successfully');</script>";
+        }
+	  }
+    else {
+        echo "<script>alert('No image uploaded');</script>";
+        $newImageName = ""; // Set empty image name if no image is uploaded
+    }
 
-    // Execute the query
-    if ($conn->query($sql) === TRUE) {  
-        // Redirect user to members-list.php after successful form submission
+    // Insert data into the database
+    $sql = "INSERT INTO 'tbf_mem' ('name', mobile, email, bname, bcategory, baddress, password, repassword, user_id, 'image') VALUES ('$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id','$newImageName')";
+
+	if ($conn->query($sql) === TRUE) {
         header("Location: members-list.php");
         exit();
     } else {
@@ -39,6 +54,8 @@ if (isset($_POST["btn"])) {
     $conn->close();
 }
 ?>
+
+
 
 
 <?php
@@ -703,11 +720,13 @@ echo $invoice; // This will output the incremented invoice number
 													class="mb-3"></center>
 
 													<form class="row g-3 needs-validation" novalidate="" method="post">
-													<div class="mb-3">
-                										<label class="form-label">Upload_Picture:</label><br>
-            											 <input type="file" name="image" id="file">
-              											 
-            											</div>
+													<div class="col-md-12">
+															<label for="bsValidation3" class="form-label">Upload Photo:</label>
+															<input id="" type="file" name="image" accept=".jpg, .png, image/jpeg, image/png" multiple>
+															<div class="invalid-feedback">
+																Please upload a photo.
+															</div>
+														</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">User_Id:</label>
 															<input type="text" class="form-control" id="bsValidation3" placeholder="" value="<?php echo $invoice; ?>" name="user_id" required="" readonly>
@@ -829,7 +848,7 @@ echo $invoice; // This will output the incremented invoice number
 									<tr>
 										<td><?php echo $row['s_no']; ?></td>
 										<td><?php echo $row['user_id']; ?></td>
-										<td><img src= <?php echo $row['Profile_Image']; ?> width = '200px'  height = '70px'></td>
+										<td><img src="uploads/ <?php echo $row['image']; ?>" width='100px' height='70px;'></td>
 										<td><?php echo $row['name']; ?></td>
 										<td><?php echo $row['mobile']; ?></td>
 										<td><?php echo $row['email']; ?></td>
