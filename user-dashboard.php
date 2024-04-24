@@ -1,3 +1,47 @@
+<?php
+
+include "db_conn.php"; // Assuming db_conn.php contains your database connection details
+
+session_start();
+
+// Check if email is set in the GET request
+if (isset($_GET["email"])) {
+    // Assign the email from the GET request to a different variable
+    $requested_email = $_GET["email"];
+
+    // Prepare and execute SQL query to select data based on the provided email
+    $sql = "SELECT `user_id`, `name`, `mobile`, `email`, `bname`, `baddress` FROM `tbf_mem` WHERE `email` = '$requested_email'";
+    $result = $conn->query($sql);
+
+    // Check if any rows were returned
+    if ($result->num_rows > 0) {
+        // Output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo "user_id: " . $row["user_id"] . "<br>";
+            echo "name: " . $row["name"] . "<br>";
+            echo "email: " . $row["email"] . "<br>";
+            echo "<br>";
+        }
+    } else {
+        echo "No user found with the provided email";
+    }
+
+    // Close the database connection
+    $conn->close();
+} else {
+    echo "No email provided in the request";
+}
+?>
+
+<?php
+include "db_conn.php";
+$sql = "SELECT * FROM tbf_mem";
+$result=$conn->query($sql);
+$rowCount = $result->num_rows;
+?>
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -63,7 +107,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="thanks-note.php ">
 						<div class="parent-icon"><i class="fa fa-edit"></i>
 						</div>
 						<div class="menu-title">Thanks Note</div>
@@ -1153,10 +1197,11 @@
 									</div>
 								</div>
 							</div>
+							<form action="" method="POST" enctype="multipart/form-data">
 							<div class="card-body">
 								<div class="d-flex flex-column align-items-center text-center">
 									<img src="assets/user.png" alt="Admin" class="rounded-circle p-1 bg-gradient-bloody" width="110">
-									<div class="mt-3">
+									<div class="mt-3" name="name">
 										<h4>Janakrishnamoorthy</h4>
 										<p class="text-secondary mb-1">Web Developer</p>
 										<!-- <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
@@ -1167,8 +1212,8 @@
 								<hr class="my-4">
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="fa fa-user" style="font-size: 20px;"></i> Name</h6>
-										<span class="text-secondary">Janakrishnamoorthy</span>
+										<h6 class="mb-0"><i class="fa fa-user" name="name" style="font-size: 20px;"></i> Name</h6>
+										<label value="<?php echo $row['name'] ?>"></label>
 									</li>
 									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 										<h6 class="mb-0"><i class="fa fa-id-card-o" style="font-size:20px"></i> User Id</h6>
@@ -1194,6 +1239,7 @@
 							</div>
 						   </div>
 						 </div>
+						    </form>
 						 <div class="col d-flex">
 							<div class="card radius-10 w-100">
 								<div class="card-header bg-transparent">

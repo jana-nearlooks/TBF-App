@@ -1,5 +1,5 @@
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 $s_no = $_GET["s_no"];
 $sql = "DELETE FROM `tbf_mem` WHERE s_no = $s_no";
 $result = mysqli_query($conn, $sql);

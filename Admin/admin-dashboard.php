@@ -1,3 +1,8 @@
+<?php
+ include "../db_conn.php";
+
+ ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,25 +10,25 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--favicon-->
-	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png"/>
+	<link rel="icon" href="../assets/images/favicon-32x32.png" type="image/png"/>
 	<!--plugins-->
-	<link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
-	<link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-	<link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-	<link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet"/>
+	<link href="../assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
+	<link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+	<link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet"/>
 	<!-- loader-->
-	<link href="assets/css/pace.min.css" rel="stylesheet"/>
-	<script src="assets/js/pace.min.js"></script>
+	<link href="../assets/css/pace.min.css" rel="stylesheet"/>
+	<script src="../assets/js/pace.min.js"></script>
 	<!-- Bootstrap CSS -->
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="assets/css/bootstrap-extended.css" rel="stylesheet">
+	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../assets/css/bootstrap-extended.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
-	<link href="assets/css/app.css" rel="stylesheet">
-	<link href="assets/css/icons.css" rel="stylesheet">
+	<link href="..../assets/css/app.css" rel="stylesheet">
+	<link href="../assets/css/icons.css" rel="stylesheet">
 	<!-- Theme Style CSS -->
-	<link rel="stylesheet" href="assets/css/dark-theme.css"/>
-	<link rel="stylesheet" href="assets/css/semi-dark.css"/>
-	<link rel="stylesheet" href="assets/css/header-colors.css"/>
+	<link rel="stylesheet" href="../assets/css/dark-theme.css"/>
+	<link rel="stylesheet" href="../assets/css/semi-dark.css"/>
+	<link rel="stylesheet" href="../assets/css/header-colors.css"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 	<title>TBF - Admin Dashboard</title>
@@ -138,7 +143,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/slack.png" width="30" alt="">
+												  <img src="../assets/images/app/slack.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Slack</p>
@@ -150,7 +155,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/behance.png" width="30" alt="">
+												  <img src="../assets/images/app/behance.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Behance</p>
@@ -162,7 +167,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												<img src="assets/images/app/google-drive.png" width="30" alt="">
+												<img src="../assets/images/app/google-drive.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Dribble</p>
@@ -174,7 +179,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/outlook.png" width="30" alt="">
+												  <img src="../assets/images/app/outlook.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Outlook</p>
@@ -186,7 +191,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/github.png" width="30" alt="">
+												  <img src="../assets/images/app/github.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">GitHub</p>
@@ -198,7 +203,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/stack-overflow.png" width="30" alt="">
+												  <img src="../assets/images/app/stack-overflow.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Stack</p>
@@ -210,7 +215,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/figma.png" width="30" alt="">
+												  <img src="../assets/images/app/figma.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Stack</p>
@@ -222,7 +227,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/twitter.png" width="30" alt="">
+												  <img src="../assets/images/app/twitter.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Twitter</p>
@@ -234,7 +239,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/google-calendar.png" width="30" alt="">
+												  <img src="../assets/images/app/google-calendar.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Calendar</p>
@@ -246,7 +251,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/spotify.png" width="30" alt="">
+												  <img src="../assets/images/app/spotify.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Spotify</p>
@@ -258,7 +263,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/google-photos.png" width="30" alt="">
+												  <img src="../assets/images/app/google-photos.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Photos</p>
@@ -270,7 +275,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/pinterest.png" width="30" alt="">
+												  <img src="../assets/images/app/pinterest.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Photos</p>
@@ -282,7 +287,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/linkedin.png" width="30" alt="">
+												  <img src="../assets/images/app/linkedin.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">linkedin</p>
@@ -294,7 +299,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/dribble.png" width="30" alt="">
+												  <img src="../assets/images/app/dribble.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Dribble</p>
@@ -306,7 +311,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/youtube.png" width="30" alt="">
+												  <img src="../assets/images/app/youtube.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">YouTube</p>
@@ -318,7 +323,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/google.png" width="30" alt="">
+												  <img src="../assets/images/app/google.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">News</p>
@@ -330,7 +335,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/envato.png" width="30" alt="">
+												  <img src="../assets/images/app/envato.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Envato</p>
@@ -342,7 +347,7 @@
 										  <a href="javascript:;">
 											<div class="app-box text-center">
 											  <div class="app-icon">
-												  <img src="assets/images/app/safari.png" width="30" alt="">
+												  <img src="../assets/images/app/safari.png" width="30" alt="">
 											  </div>
 											  <div class="app-name">
 												  <p class="mb-0 mt-1">Safari</p>
@@ -372,7 +377,7 @@
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-1.png" class="msg-avatar" alt="user avatar">
+													<img src="../assets/images/avatars/avatar-1.png" class="msg-avatar" alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
 													<h6 class="msg-name">Daisy Anderson<span class="msg-time float-end">5 sec
@@ -395,7 +400,7 @@
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-2.png" class="msg-avatar" alt="user avatar">
+													<img src="../assets/images/avatars/avatar-2.png" class="msg-avatar" alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
 													<h6 class="msg-name">Althea Cabardo <span class="msg-time float-end">14
@@ -407,7 +412,7 @@
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="notify bg-light-success text-success">
-													<img src="assets/images/app/outlook.png" width="25" alt="user avatar">
+													<img src="../assets/images/app/outlook.png" width="25" alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
 													<h6 class="msg-name">Account Created<span class="msg-time float-end">28 min
@@ -430,7 +435,7 @@
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-4.png" class="msg-avatar" alt="user avatar">
+													<img src="../assets/images/avatars/avatar-4.png" class="msg-avatar" alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
 													<h6 class="msg-name">Katherine Pechon <span class="msg-time float-end">15
@@ -453,7 +458,7 @@
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="notify bg-light-primary">
-													<img src="assets/images/app/github.png" width="25" alt="user avatar">
+													<img src="../assets/images/app/github.png" width="25" alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
 													<h6 class="msg-name">New 24 authors<span class="msg-time float-end">1 day
@@ -465,7 +470,7 @@
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-8.png" class="msg-avatar" alt="user avatar">
+													<img src="../assets/images/avatars/avatar-8.png" class="msg-avatar" alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
 													<h6 class="msg-name">Peter Costanzo <span class="msg-time float-end">6 hrs
@@ -498,7 +503,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/11.png" class="" alt="product image">
+														<img src="../assets/images/products/11.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -516,7 +521,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/02.png" class="" alt="product image">
+														<img src="../assets/images/products/02.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -534,7 +539,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/03.png" class="" alt="product image">
+														<img src="../assets/images/products/03.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -552,7 +557,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/04.png" class="" alt="product image">
+														<img src="../assets/images/products/04.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -570,7 +575,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/05.png" class="" alt="product image">
+														<img src="../assets/images/products/05.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -588,7 +593,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/06.png" class="" alt="product image">
+														<img src="../assets/images/products/06.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -606,7 +611,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/07.png" class="" alt="product image">
+														<img src="../assets/images/products/07.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -624,7 +629,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/08.png" class="" alt="product image">
+														<img src="../assets/images/products/08.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -642,7 +647,7 @@
 											<div class="d-flex align-items-center gap-3">
 												<div class="position-relative">
 													<div class="cart-product rounded-circle bg-light">
-														<img src="assets/images/products/09.png" class="" alt="product image">
+														<img src="../assets/images/products/09.png" class="" alt="product image">
 													</div>
 												</div>
 												<div class="flex-grow-1">
@@ -672,7 +677,7 @@
 					</div>
 					<div class="user-box dropdown px-3">
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="assets/user.png" class="user-img" alt="user avatar">
+							<img src="../assets/user.png" class="user-img" alt="user avatar">
 							<div class="user-info">
 								<p class="user-name mb-0">Admin</p>
 								<p class="designattion mb-0">TBF</p>
@@ -935,7 +940,7 @@
 							 </thead>
 							 <tbody><tr>
 							  <td>Iphone 5</td>
-							  <td><img src="assets/images/products/01.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/01.png" class="product-img-2" alt="product img"></td>
 							  <td>#9405822</td>
 							  <td><span class="badge bg-gradient-quepal text-white shadow-sm w-100">Paid</span></td>
 							  <td>$1250.00</td>
@@ -947,7 +952,7 @@
 		  
 							 <tr>
 							  <td>Earphone GL</td>
-							  <td><img src="assets/images/products/02.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/02.png" class="product-img-2" alt="product img"></td>
 							  <td>#8304620</td>
 							  <td><span class="badge bg-gradient-blooker text-white shadow-sm w-100">Pending</span></td>
 							  <td>$1500.00</td>
@@ -959,7 +964,7 @@
 		  
 							 <tr>
 							  <td>HD Hand Camera</td>
-							  <td><img src="assets/images/products/03.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/03.png" class="product-img-2" alt="product img"></td>
 							  <td>#4736890</td>
 							  <td><span class="badge bg-gradient-bloody text-white shadow-sm w-100">Failed</span></td>
 							  <td>$1400.00</td>
@@ -971,7 +976,7 @@
 		  
 							 <tr>
 							  <td>Clasic Shoes</td>
-							  <td><img src="assets/images/products/04.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/04.png" class="product-img-2" alt="product img"></td>
 							  <td>#8543765</td>
 							  <td><span class="badge bg-gradient-quepal text-white shadow-sm w-100">Paid</span></td>
 							  <td>$1200.00</td>
@@ -982,7 +987,7 @@
 							 </tr>
 							 <tr>
 							  <td>Sitting Chair</td>
-							  <td><img src="assets/images/products/06.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/06.png" class="product-img-2" alt="product img"></td>
 							  <td>#9629240</td>
 							  <td><span class="badge bg-gradient-blooker text-white shadow-sm w-100">Pending</span></td>
 							  <td>$1500.00</td>
@@ -993,7 +998,7 @@
 							 </tr>
 							 <tr>
 							  <td>Hand Watch</td>
-							  <td><img src="assets/images/products/05.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/05.png" class="product-img-2" alt="product img"></td>
 							  <td>#8506790</td>
 							  <td><span class="badge bg-gradient-bloody text-white shadow-sm w-100">Failed</span></td>
 							  <td>$1800.00</td>
@@ -1303,18 +1308,18 @@
 	</div> -->
 	<!--end switcher-->
 	<!-- Bootstrap JS -->
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="../assets/js/bootstrap.bundle.min.js"></script>
 	<!--plugins-->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-	<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-	<script src="assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-    <script src="assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
-	<script src="assets/plugins/chartjs/js/chart.js"></script>
-	<script src="assets/js/index.js"></script>
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="../assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="../assets/plugins/chartjs/js/chart.js"></script>
+	<script src="../assets/js/index.js"></script>
 	<!--app JS-->
-	<script src="assets/js/app.js"></script>
+	<script src="../assets/js/app.js"></script>
 	<script>
 		new PerfectScrollbar(".app-container")
 	</script>

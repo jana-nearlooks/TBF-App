@@ -1,3 +1,87 @@
+<?php
+include "db_conn.php";
+
+if(isset($_POST["submit"])) {
+    $id = $_POST['id'];
+	$name =$_POST['name'];
+    $bcategory = $_POST['bcategory']; 
+    $refamount = $_POST['refamount'];  
+    $btype =  $_POST['btype'];
+    $reftype = $_POST['reftype'];
+	$comments = $_POST['comments'];
+
+   $sql = "INSERT INTO `thanks_note`(`id`, `name`, `bcategory`, `refamount`, `btype`, `reftype`, `comments`) VALUES ('$id','$name','$bcategory','$refamount','$btype','$reftype','$comments')";
+    
+   $result = mysqli_query($conn, $sql);
+
+     if($result) {
+        header("Location: thanks-note.php?msg=New record created successfully");
+        }
+        else{
+            echo "Failed: " . mysqli_error($conn);
+        }
+    }
+    
+?>
+
+<?php
+// Include the database connection file
+include "db_conn.php";
+
+// Check if the 'id' parameter is set in the URL
+if(isset($_GET["id"]) && !empty($_GET["id"])) {
+    // Sanitize the ID parameter to prevent SQL injection
+    $id = mysqli_real_escape_string($conn, $_GET["id"]);
+
+    // SQL query to delete a record
+    $sql = "DELETE FROM `thanks_note` WHERE id = '$id'";
+
+    // Execute the query
+    if(mysqli_query($conn, $sql)) {
+        // If the query is successful, redirect back with a success message
+        header("Location: thanks-note.php?msg=Data deleted successfully");
+        exit(); // Terminate script after redirection
+    } else {
+        // If the query fails, display an error message
+        echo "Failed: " . mysqli_error($conn);
+    }
+} else {
+    // If the 'id' parameter is not set or empty in the URL, display an error message
+    echo "ID parameter is missing or empty";
+}
+
+?>
+
+<?php
+
+// Fetch data from database
+$sql = "SELECT * FROM tbf_mem";
+$result = $conn->query($sql);
+ 
+// HTML form with dropdown menu
+echo "<form action='' method='post'>";
+echo "<select name='name'>";
+while ($row = $result->fetch_assoc()) {
+    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+}
+echo "</select>";
+echo "<input type='submit' name='name' value='Submit'>";
+echo "</form>";
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $selected_id = $_POST['dropdown'];
+    // Do something with the selected ID, for example:
+    echo "You selected ID: " . $selected_id;
+}
+
+?>
+
+<?php
+
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -73,7 +157,7 @@
 			<ul class="metismenu" id="menu">
 				<li class="menu-label" style="color: #6512E0; font-weight: bold; font-size: 16px;">Theni Business Forum</li>
 				<li>
-					<a href="#"  >
+					<a href="user-dashboard.php"  >
 						<div class="parent-icon"><i class="fa-solid fa-house"></i>
 						</div>
 						<div class="menu-title">Dashboard</div>
@@ -728,7 +812,7 @@
 			
 				</div>
 				<!--end breadcrumb-->
-	
+	              
 
 			
 		
@@ -751,14 +835,14 @@
                                     </div>
                                     <div class="card-body p-4">
                                        <center><img src="../assets/images/favicon.png" alt="" width="100" class="mb-3"></center> 
-                                        <form class="row g-3 needs-validation" novalidate="">
+                                        <form class="row g-3 needs-validation" novalidate="" method="post">
                                             <div class="col-md-6">
                                                 <label for="bsValidation3" class="form-label">Select a member from your connection:</label>
-                                                <select id="bsValidation11" class="form-select" required="">
+                                                <select id="bsValidation11" class="form-select" name="name" required="">
                                                     <option selected="" disabled="" value=""></option>
-                                                    <option>Milton</option>
-                                                    <option>Hari</option>
-                                                    <option>Balasankari</option>
+                                                    <option>Arun</option>
+                                                    <option>Paal Pandi</option>
+                                                    <option>Venkatesh</option>
                                                 </select>
                                                 <div class="invalid-feedback">
                                                     Please select a member.
@@ -766,11 +850,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="bsValidation3" class="form-label">Business Category:</label>
-                                                <select id="bsValidation11" class="form-select" required="">
+                                                <select id="bsValidation11" class="form-select" name="bcategory"  required="">
                                                     <option selected="" disabled="" value=""></option>
                                                     <option>Business 1</option>
                                                     <option>Business 2</option>
-                                                    <option>Business 3</option>
+                                                    <option>Business 3</option> 
                                                 </select>
                                                 <div class="invalid-feedback">
                                                     Please select a business category.
@@ -778,46 +862,22 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="bsValidation3" class="form-label">For a referral in the amount of:</label>
-                                                <input type="text" class="form-control" id="bsValidation3" placeholder="Enter Amount Details" required="">
+                                                <input type="text" class="form-control" id="bsValidation3" placeholder="Enter Amount Details" name="refamount" required="">
                                                 <div class="invalid-feedback">
                                                     Please choose a username.
                                                   </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="bsValidation3" class="form-label">Business Type:</label>
-                                                <select id="bsValidation11" class="form-select" required="">
-                                                    <option selected="" disabled="" value=""></option>
-                                                    <option>New</option>
-                                                    <option>Repeat</option>
-                                                    
-                                                </select>
-                                                <div class="invalid-feedback">
-                                                    Please select a business type.
-                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="bsValidation3" class="form-label">Referral Type:</label>
-                                                <select id="bsValidation11" class="form-select" required="">
-                                                    <option selected="" disabled="" value=""></option>
-                                                    <option>Tier 1 (Inside)</option>
-                                                    <option>Tier 2 (Outside)</option>
-                                                    <option>Tier 3</option>
-                                                    
-                                                </select>
-                                                <div class="invalid-feedback">
-                                                    Please select a member.
-                                                 </div>
-                                            </div>
+                                            
                                       
                                             <div class="col-md-12">
                                                 <div class="d-flex align-items-center gap-3">
                                                     <label for="bsValidation3" class="form-label"> Business Type:</label>
                                                     <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="radio-stacked" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="btype" value="New" required="">
                                                         <label class="form-check-label" for="bsValidation6">New</label>
                                                       </div>
                                                       <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="radio-stacked" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="btype" value="Repeat" required="">
                                                         <label class="form-check-label" for="bsValidation7">Repeat</label>
                                                       </div>
                                                 </div>
@@ -827,15 +887,15 @@
                                                 <div class="d-flex align-items-center gap-3">
                                                     <label for="bsValidation3" class="form-label"> Referral Type:</label>
                                                     <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="radio-stacked" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="reftype" value="Tier 1" required="">
                                                         <label class="form-check-label" for="bsValidation6">Tier 1 (Inside)</label>
                                                       </div>
                                                       <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="radio-stacked" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="reftype" value="Tier 2" required="">
                                                         <label class="form-check-label" for="bsValidation7">Tier 2 (Outside)</label>
                                                       </div>
                                                       <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="radio-stacked" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="reftype" value="Tier 3" required="">
                                                         <label class="form-check-label" for="bsValidation7">Tier 3</label>
                                                       </div>
                                                 </div>
@@ -843,7 +903,7 @@
                              
                                             <div class="col-md-12">
                                                 <label for="bsValidation13" class="form-label">Comments:</label>
-                                                <textarea class="form-control" id="bsValidation13" placeholder="Enter your comments here!" rows="3" required=""></textarea>
+                                                <textarea class="form-control" id="bsValidation13" placeholder="Enter your comments here!" name="comments" rows="3" required=""></textarea>
                                                 <div class="invalid-feedback">
                                                     Please enter a valid comment.
                                                 </div>
@@ -859,7 +919,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                                    <button type="submit" class="btn btn-primary px-4" name="submit">Submit</button>
                                                     <button type="reset" class="btn btn-light px-4">Reset</button>
                                                 </div>
                                             </div>
@@ -871,6 +931,16 @@
                         </div>
 						</div>
                         <hr/>
+						<?php
+                            if(isset($_GET['msg'])){
+                            $msg = $_GET['msg'];
+                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            '.$msg.'
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                             </div>';
+                               }
+                          ?>
+
 
 						<div class="table-responsive mt-3">
                             
@@ -887,7 +957,33 @@
                                         <th>Actions</th>
 									</tr>
 								</thead>
-								
+								<tbody>
+								<?php
+      
+	                                $sql = "SELECT * FROM `thanks_note`";
+	                                $result = mysqli_query($conn, $sql);
+	                                while ($row = mysqli_fetch_assoc($result)) {
+	                            ?>
+
+								    <tr> 
+										<td><?php echo $row['id'] ?></td>
+										<td><?php echo $row['name'] ?></td>
+										<td><?php echo $row['bcategory'] ?></td>
+										<td><?php echo $row['refamount'] ?></td>
+										<td><?php echo $row['btype'] ?></td>
+										<td><?php echo $row['reftype'] ?></td>
+										<td><?php echo $row['comments'] ?></td>
+										<td>
+										  <a href="thanks-edit.php?id=<?php echo $row['id'] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a> &nbsp;&nbsp;
+										  <a href="thanks-note.php?id=<?php echo $row['id'] ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
+										</td>
+
+									</tr>
+									<?php
+								      }
+								       ?>
+
+								</tbody>	
 							</table>
 						</div>
 					</div>

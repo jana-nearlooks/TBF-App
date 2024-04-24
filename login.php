@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $_SESSION['email'] = $email;
         $_SESSION['admin'] = true;
-        header("Location: admin-dashboard.php");
+        header("Location: Admin/admin-dashboard.php");
         exit(); 
     } 
 
@@ -36,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 }
 ?>
-
 
 
 <!doctype html>

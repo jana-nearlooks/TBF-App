@@ -1,5 +1,5 @@
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 
 if (isset($_POST["btn"])) {
 	$user_id = $_POST["user_id"];
@@ -24,14 +24,14 @@ if (isset($_POST["btn"])) {
         if(!in_array($imageExtension, $validImageExtensions)){
             echo "<script>alert('Invalid image extension');</script>";
         }
-        else if($fileSize > 1000000){
+        else if($fileSize > 2000000){
             echo "<script>alert('Image size is too large');</script>";
         }
         else{
             $newImageName = uniqid();
             $newImageName .= '.' .$imageExtension;
 
-            move_uploaded_file($tmpName,'uploads/'. $newImageName);
+            move_uploaded_file($tmpName,'../uploads/'. $newImageName);
             echo "<script>alert('Image uploaded successfully');</script>";
         }
 	  }
@@ -41,13 +41,13 @@ if (isset($_POST["btn"])) {
     }
 
     // Insert data into the database
-    $sql = "INSERT INTO 'tbf_mem' ('name', mobile, email, bname, bcategory, baddress, password, repassword, user_id, 'image') VALUES ('$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id','$newImageName')";
+    $sql = "INSERT INTO `tbf_mem` (image, name, mobile, email, bname, bcategory, baddress, password, repassword, user_id) VALUES ('$newImageName', '$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id')";
 
-	if ($conn->query($sql) === TRUE) {
+	if($conn->query($sql) === TRUE) {
         header("Location: members-list.php");
         exit();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql. "<br>" . $conn->error;
     }
 
     // Close the connection
@@ -59,14 +59,14 @@ if (isset($_POST["btn"])) {
 
 
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 $sql = "SELECT * FROM tbf_mem";
 $result=$conn->query($sql);
 $rowCount = $result->num_rows;
 ?>
 
 <?php
-include "db_conn.php";
+include "../db_conn.php";
 
 $sql = "SELECT * FROM tbf_mem ORDER BY user_id DESC LIMIT 1";
 $query = mysqli_query($conn, $sql);
@@ -103,24 +103,24 @@ echo $invoice; // This will output the incremented invoice number
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--favicon-->
-	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+	<link rel="icon" href="../assets/images/favicon-32x32.png" type="image/png" />
 	<!--plugins-->
-	<link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+	<link href="../assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
 
-	<link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-	<link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+	<link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+	<link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
 
-	<link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-	<link href="assets/plugins/fancy-file-uploader/fancy_fileupload.css" rel="stylesheet" />
-	<link href="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
+	<link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<link href="../assets/plugins/fancy-file-uploader/fancy_fileupload.css" rel="stylesheet" />
+	<link href="../assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
 
-	<link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+	<link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
 	<!-- loader-->
 
 
 
-	<link href="assets/css/pace.min.css" rel="stylesheet" />
-	<script src="assets/js/pace.min.js"></script>
+	<link href="../assets/css/pace.min.css" rel="stylesheet" />
+	<script src="../assets/js/pace.min.js"></script>
 	<!-- Bootstrap CSS -->
 
 
@@ -129,11 +129,11 @@ echo $invoice; // This will output the incremented invoice number
 
 
 
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="assets/css/bootstrap-extended.css" rel="stylesheet">
+	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../assets/css/bootstrap-extended.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
-	<link href="assets/css/app.css" rel="stylesheet">
-	<link href="assets/css/icons.css" rel="stylesheet">
+	<link href="../assets/css/app.css" rel="stylesheet">
+	<link href="../assets/css/icons.css" rel="stylesheet">
 	<!-- Theme Style CSS -->
 
 
@@ -141,9 +141,9 @@ echo $invoice; // This will output the incremented invoice number
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-	<link rel="stylesheet" href="assets/css/dark-theme.css" />
-	<link rel="stylesheet" href="assets/css/semi-dark.css" />
-	<link rel="stylesheet" href="assets/css/header-colors.css" />
+	<link rel="stylesheet" href="../assets/css/dark-theme.css" />
+	<link rel="stylesheet" href="../assets/css/semi-dark.css" />
+	<link rel="stylesheet" href="../assets/css/header-colors.css" />
 	<title>TBF - Members List</title>
 
 	<style>
@@ -160,7 +160,7 @@ echo $invoice; // This will output the incremented invoice number
 		<div class="sidebar-wrapper" data-simplebar="true">
 			<div class="sidebar-header">
 				<div>
-					<img src="../assets/images/favicon.png" class="logo-icon" alt="logo icon">
+					<img src="../../assets/images/favicon.png" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
 					<h4 class="logo-text">TBF</h4>
@@ -175,7 +175,7 @@ echo $invoice; // This will output the incremented invoice number
 				<li class="menu-label" style="color: #6512E0; font-weight: bold; font-size: 16px;">Theni Business Forum
 				</li>
 				<li>
-					<a href="#">
+					<a href="admin-dashboard.php">
 						<div class="parent-icon"><i class="fa-solid fa-house"></i>
 						</div>
 						<div class="menu-title">Dashboard</div>
@@ -189,7 +189,7 @@ echo $invoice; // This will output the incremented invoice number
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="thanks-note.php">
 						<div class="parent-icon"><i class="fa fa-edit"></i>
 						</div>
 						<div class="menu-title">Thanks Note</div>
@@ -262,7 +262,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/slack.png" width="30" alt="">
+															<img src="../assets/images/app/slack.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Slack</p>
@@ -274,7 +274,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/behance.png" width="30" alt="">
+															<img src="../assets/images/app/behance.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Behance</p>
@@ -286,7 +286,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/google-drive.png" width="30"
+															<img src="../assets/images/app/google-drive.png" width="30"
 																alt="">
 														</div>
 														<div class="app-name">
@@ -299,7 +299,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/outlook.png" width="30" alt="">
+															<img src="../assets/images/app/outlook.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Outlook</p>
@@ -311,7 +311,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/github.png" width="30" alt="">
+															<img src="../assets/images/app/github.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">GitHub</p>
@@ -323,7 +323,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/stack-overflow.png" width="30"
+															<img src="../assets/images/app/stack-overflow.png" width="30"
 																alt="">
 														</div>
 														<div class="app-name">
@@ -336,7 +336,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/figma.png" width="30" alt="">
+															<img src="../assets/images/app/figma.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Stack</p>
@@ -348,7 +348,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/twitter.png" width="30" alt="">
+															<img src="../assets/images/app/twitter.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Twitter</p>
@@ -360,7 +360,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/google-calendar.png" width="30"
+															<img src="../assets/images/app/google-calendar.png" width="30"
 																alt="">
 														</div>
 														<div class="app-name">
@@ -373,7 +373,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/spotify.png" width="30" alt="">
+															<img src="../assets/images/app/spotify.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Spotify</p>
@@ -385,7 +385,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/google-photos.png" width="30"
+															<img src="../assets/images/app/google-photos.png" width="30"
 																alt="">
 														</div>
 														<div class="app-name">
@@ -398,7 +398,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/pinterest.png" width="30"
+															<img src="../assets/images/app/pinterest.png" width="30"
 																alt="">
 														</div>
 														<div class="app-name">
@@ -411,7 +411,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/linkedin.png" width="30" alt="">
+															<img src="../assets/images/app/linkedin.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">linkedin</p>
@@ -423,7 +423,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/dribble.png" width="30" alt="">
+															<img src="../assets/images/app/dribble.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Dribble</p>
@@ -435,7 +435,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/youtube.png" width="30" alt="">
+															<img src="../assets/images/app/youtube.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">YouTube</p>
@@ -447,7 +447,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/google.png" width="30" alt="">
+															<img src="../assets/images/app/google.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">News</p>
@@ -459,7 +459,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/envato.png" width="30" alt="">
+															<img src="../assets/images/app/envato.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Envato</p>
@@ -471,7 +471,7 @@ echo $invoice; // This will output the incremented invoice number
 												<a href="javascript:;">
 													<div class="app-box text-center">
 														<div class="app-icon">
-															<img src="assets/images/app/safari.png" width="30" alt="">
+															<img src="../assets/images/app/safari.png" width="30" alt="">
 														</div>
 														<div class="app-name">
 															<p class="mb-0 mt-1">Safari</p>
@@ -502,7 +502,7 @@ echo $invoice; // This will output the incremented invoice number
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-1.png" class="msg-avatar"
+													<img src="../assets/images/avatars/avatar-1.png" class="msg-avatar"
 														alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
@@ -528,7 +528,7 @@ echo $invoice; // This will output the incremented invoice number
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-2.png" class="msg-avatar"
+													<img src="../assets/images/avatars/avatar-2.png" class="msg-avatar"
 														alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
@@ -542,7 +542,7 @@ echo $invoice; // This will output the incremented invoice number
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="notify bg-light-success text-success">
-													<img src="assets/images/app/outlook.png" width="25"
+													<img src="../assets/images/app/outlook.png" width="25"
 														alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
@@ -567,7 +567,7 @@ echo $invoice; // This will output the incremented invoice number
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-4.png" class="msg-avatar"
+													<img src="../assets/images/avatars/avatar-4.png" class="msg-avatar"
 														alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
@@ -594,7 +594,7 @@ echo $invoice; // This will output the incremented invoice number
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="notify bg-light-primary">
-													<img src="assets/images/app/github.png" width="25"
+													<img src="../assets/images/app/github.png" width="25"
 														alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
@@ -608,7 +608,7 @@ echo $invoice; // This will output the incremented invoice number
 										<a class="dropdown-item" href="javascript:;">
 											<div class="d-flex align-items-center">
 												<div class="user-online">
-													<img src="assets/images/avatars/avatar-8.png" class="msg-avatar"
+													<img src="../assets/images/avatars/avatar-8.png" class="msg-avatar"
 														alt="user avatar">
 												</div>
 												<div class="flex-grow-1">
@@ -640,7 +640,7 @@ echo $invoice; // This will output the incremented invoice number
 					<div class="user-box dropdown px-3">
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret"
 							href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="assets/user.png" class="user-img" alt="user avatar">
+							<img src="../assets/user.png" class="user-img" alt="user avatar">
 							<div class="user-info">
 								<p class="user-name mb-0">Admin</p>
 								<p class="designattion mb-0">TBF</p>
@@ -719,7 +719,7 @@ echo $invoice; // This will output the incremented invoice number
 											<center><img src="../assets/images/favicon.png" alt="" width="100"
 													class="mb-3"></center>
 
-													<form class="row g-3 needs-validation" novalidate="" method="post">
+													<form class="row g-3 needs-validation" novalidate="" method="post" enctype="multipart/form-data">
 													<div class="col-md-12">
 															<label for="bsValidation3" class="form-label">Upload Photo:</label>
 															<input id="" type="file" name="image" accept=".jpg, .png, image/jpeg, image/png" multiple>
@@ -837,7 +837,7 @@ echo $invoice; // This will output the incremented invoice number
 										<th scope="col">Action</th>
 									</tr>
 								</thead>
-								<tbody>
+								
 								<?php
 								        
 	  								if ($rowCount > 0) {
@@ -848,7 +848,7 @@ echo $invoice; // This will output the incremented invoice number
 									<tr>
 										<td><?php echo $row['s_no']; ?></td>
 										<td><?php echo $row['user_id']; ?></td>
-										<td><img src="uploads/ <?php echo $row['image']; ?>" width='100px' height='70px;'></td>
+										<td><img src="../uploads/<?php echo $row['image']; ?>" width='100px' height='70px;'></td>
 										<td><?php echo $row['name']; ?></td>
 										<td><?php echo $row['mobile']; ?></td>
 										<td><?php echo $row['email']; ?></td>
@@ -867,10 +867,7 @@ echo $invoice; // This will output the incremented invoice number
 										}
 									 ?>
 
-									
-									
-								</tbody>
-								
+							
 							</table>
 						</div>
 					</div>
@@ -1015,7 +1012,7 @@ echo $invoice; // This will output the incremented invoice number
 							 </thead>
 							 <tbody><tr>
 							  <td>Iphone 5</td>
-							  <td><img src="assets/images/products/01.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/01.png" class="product-img-2" alt="product img"></td>
 							  <td>#9405822</td>
 							  <td><span class="badge bg-gradient-quepal text-white shadow-sm w-100">Paid</span></td>
 							  <td>$1250.00</td>
@@ -1027,7 +1024,7 @@ echo $invoice; // This will output the incremented invoice number
 		  
 							 <tr>
 							  <td>Earphone GL</td>
-							  <td><img src="assets/images/products/02.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/02.png" class="product-img-2" alt="product img"></td>
 							  <td>#8304620</td>
 							  <td><span class="badge bg-gradient-blooker text-white shadow-sm w-100">Pending</span></td>
 							  <td>$1500.00</td>
@@ -1039,7 +1036,7 @@ echo $invoice; // This will output the incremented invoice number
 		  
 							 <tr>
 							  <td>HD Hand Camera</td>
-							  <td><img src="assets/images/products/03.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/03.png" class="product-img-2" alt="product img"></td>
 							  <td>#4736890</td>
 							  <td><span class="badge bg-gradient-bloody text-white shadow-sm w-100">Failed</span></td>
 							  <td>$1400.00</td>
@@ -1051,7 +1048,7 @@ echo $invoice; // This will output the incremented invoice number
 		  
 							 <tr>
 							  <td>Clasic Shoes</td>
-							  <td><img src="assets/images/products/04.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/04.png" class="product-img-2" alt="product img"></td>
 							  <td>#8543765</td>
 							  <td><span class="badge bg-gradient-quepal text-white shadow-sm w-100">Paid</span></td>
 							  <td>$1200.00</td>
@@ -1062,7 +1059,7 @@ echo $invoice; // This will output the incremented invoice number
 							 </tr>
 							 <tr>
 							  <td>Sitting Chair</td>
-							  <td><img src="assets/images/products/06.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/06.png" class="product-img-2" alt="product img"></td>
 							  <td>#9629240</td>
 							  <td><span class="badge bg-gradient-blooker text-white shadow-sm w-100">Pending</span></td>
 							  <td>$1500.00</td>
@@ -1073,7 +1070,7 @@ echo $invoice; // This will output the incremented invoice number
 							 </tr>
 							 <tr>
 							  <td>Hand Watch</td>
-							  <td><img src="assets/images/products/05.png" class="product-img-2" alt="product img"></td>
+							  <td><img src="../assets/images/products/05.png" class="product-img-2" alt="product img"></td>
 							  <td>#8506790</td>
 							  <td><span class="badge bg-gradient-bloody text-white shadow-sm w-100">Failed</span></td>
 							  <td>$1800.00</td>
@@ -1383,27 +1380,27 @@ echo $invoice; // This will output the incremented invoice number
 	</div> -->
 	<!--end switcher-->
 	<!-- Bootstrap JS -->
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="../assets/js/bootstrap.bundle.min.js"></script>
+	<script src="../assets/js/bootstrap.bundle.min.js"></script>
 	<!--plugins-->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-	<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-	<script src="assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-	<script src="assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
-	<script src="assets/plugins/chartjs/js/chart.js"></script>
-	<script src="assets/js/index.js"></script>
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="../assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+	<script src="../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="../assets/plugins/chartjs/js/chart.js"></script>
+	<script src="../assets/js/index.js"></script>
 
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-	<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-	<script src="assets/plugins/fancy-file-uploader/jquery.ui.widget.js"></script>
-	<script src="assets/plugins/fancy-file-uploader/jquery.fileupload.js"></script>
-	<script src="assets/plugins/fancy-file-uploader/jquery.iframe-transport.js"></script>
-	<script src="assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js"></script>
-	<script src="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.ui.widget.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.fileupload.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.iframe-transport.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js"></script>
+	<script src="../assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
 	<script>
 		$(document).ready(function () {
 			$("#show_hide_password a").on('click', function (event) {
@@ -1434,7 +1431,7 @@ echo $invoice; // This will output the incremented invoice number
 		})
 	</script>
 	<!--app JS-->
-	<script src="assets/js/app.js"></script>
+	<script src="../assets/js/app.js"></script>
 	<script>
 		new PerfectScrollbar(".app-container")
 	</script>
