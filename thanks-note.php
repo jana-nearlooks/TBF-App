@@ -786,7 +786,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" a href="logout.php;"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
 							</li>
 						</ul>
 					</div>
@@ -838,12 +838,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <form class="row g-3 needs-validation" novalidate="" method="post">
                                             <div class="col-md-6">
                                                 <label for="bsValidation3" class="form-label">Select a member from your connection:</label>
-                                                <select id="bsValidation11" class="form-select" name="name" required="">
-                                                    <option selected="" disabled="" value=""></option>
-                                                    <option>Arun</option>
-                                                    <option>Paal Pandi</option>
-                                                    <option>Venkatesh</option>
-                                                </select>
+                                                <select class="form-control" name="name" id="">
+    											<?php
+    												$sql = "SELECT name FROM tbf_mem;";
+    												$result = $GLOBALS['conn']->query($sql);
+    											if ($result->num_rows > 0) {
+       											 // output data of each row
+       												 while($row = $result->fetch_assoc()) {
+           								 				$name = $row['name'];
+           											 echo "<option value=''>$name</option>";
+       												 }
+   													 }
+    													?>
+    											</select>
                                                 <div class="invalid-feedback">
                                                     Please select a member.
                                                  </div>
