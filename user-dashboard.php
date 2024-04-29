@@ -4,34 +4,48 @@ include "db_conn.php"; // Assuming db_conn.php contains your database connection
 
 session_start();
 
-// Check if email is set in the GET request
-if (isset($_GET["email"])) {
-    // Assign the email from the GET request to a different variable
-    $requested_email = $_GET["email"];
+// Check if the user is logged in (email is stored in the session)
+if (isset($_SESSION["email"])) {
+    // Retrieve the email of the logged-in user from the session
+    $logged_in_email = $_SESSION["email"];
 
-    // Prepare and execute SQL query to select data based on the provided email
-    $sql = "SELECT `user_id`, `name`, `mobile`, `email`, `bname`, `baddress` FROM `tbf_mem` WHERE `email` = '$requested_email'";
-    $result = $conn->query($sql);
+    // Prepare and execute SQL query to select data based on the logged-in user's email
+    $sql = "SELECT `user_id`, `name`, `mobile`, `email`, `bname`, `baddress` FROM `tbf_mem` WHERE `email` = ?";
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
+
+    // Bind the parameter
+    $stmt->bind_param("s", $logged_in_email);
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Get the result
+    $result = $stmt->get_result();
 
     // Check if any rows were returned
     if ($result->num_rows > 0) {
-        // Output data of each row
-        while ($row = $result->fetch_assoc()) {
-            echo "user_id: " . $row["user_id"] . "<br>";
-            echo "name: " . $row["name"] . "<br>";
-            echo "email: " . $row["email"] . "<br>";
-            echo "<br>";
-        }
+        // Output data of the logged-in user
+        $row = $result->fetch_assoc();
+        echo "user_id: " . $row["user_id"];
+        echo "name: " . $row["name"];
+        echo "email: " . $row["email"];
+        // Output other fields as needed
     } else {
         echo "No user found with the provided email";
     }
 
-    // Close the database connection
-    $conn->close();
+    // Close the prepared statement
+    $stmt->close();
 } else {
-    echo "No email provided in the request";
+    echo "User not logged in";
 }
+
+// Close the database connection
+$conn->close();
 ?>
+
 
 <?php
 include "db_conn.php";
@@ -711,8 +725,52 @@ $rowCount = $result->num_rows;
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="assets/user.png" class="user-img" alt="user avatar">
 							<div class="user-info">
-								<p class="user-name mb-0">Janakrishnamoorthy</p>
-								<p class="designattion mb-0">Web Developer</p>
+							<?php
+    // Check if the user is logged in
+    if (isset($_SESSION["email"])) {
+        include "db_conn.php"; // Assuming db_conn.php contains your database connection details
+
+        // Retrieve the logged-in user's email from the session
+        $logged_in_email = $_SESSION["email"];
+
+        // Prepare and execute SQL query to select the name of the logged-in user based on their email
+        $sql = "SELECT name FROM tbf_mem WHERE email = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "s", $logged_in_email);
+
+        // Execute SQL statement
+        mysqli_stmt_execute($stmt);
+
+        // Get result set
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Close prepared statement
+        mysqli_stmt_close($stmt);
+
+        // Check if there is a row
+        if (mysqli_num_rows($result) > 0) {
+            // Output the name of the logged-in user
+            $row = mysqli_fetch_assoc($result);
+            ?>
+            <div class="mt-3" name="name">
+                <p><?php echo htmlspecialchars($row['name']); ?></p>
+            </div>
+            <?php
+        } else {
+            // No user found with the provided email
+            echo "No user found with the provided email";
+        }
+
+        // Close database connection
+        mysqli_close($conn);
+    } else {
+        // User is not logged in
+        echo "User not logged in";
+    }
+?>
+								
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
@@ -729,7 +787,7 @@ $rowCount = $result->num_rows;
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" a href="logout.php"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
 							</li>
 						</ul>
 					</div>
@@ -741,7 +799,55 @@ $rowCount = $result->num_rows;
 		<div class="page-wrapper">
 			<div class="page-content">
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Welcome Janakrishnamoorthy!</div>
+				<?php
+   
+    // Check if the user is logged in
+    if (isset($_SESSION["email"])) {
+        include "db_conn.php"; // Assuming db_conn.php contains your database connection details
+
+        // Retrieve the logged-in user's email from the session
+        $logged_in_email = $_SESSION["email"];
+
+        // Prepare and execute SQL query to select the name of the logged-in user based on their email
+        $sql = "SELECT name FROM tbf_mem WHERE email = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "s", $logged_in_email);
+
+        // Execute SQL statement
+        mysqli_stmt_execute($stmt);
+
+        // Get result set
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Close prepared statement
+        mysqli_stmt_close($stmt);
+
+        // Check if there is a row
+        if (mysqli_num_rows($result) > 0) {
+            // Output the name of the logged-in user
+            $row = mysqli_fetch_assoc($result);
+            ?>
+            <div class="mt-3" name="name">
+			<div class="breadcrumb-title pe-3">Welcome&nbsp;<?php echo htmlspecialchars($row['name']); ?></div>
+             
+            </div>
+            <?php
+        } else {
+            // No user found with the provided email
+            echo "No user found with the provided email";
+        }
+
+        // Close database connection
+        mysqli_close($conn);
+    } else {
+        // User is not logged in
+        echo "User not logged in";
+    }
+?>
+
+					
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
@@ -1201,40 +1307,126 @@ $rowCount = $result->num_rows;
 							<div class="card-body">
 								<div class="d-flex flex-column align-items-center text-center">
 									<img src="assets/user.png" alt="Admin" class="rounded-circle p-1 bg-gradient-bloody" width="110">
-									<div class="mt-3" name="name">
-										<h4>Janakrishnamoorthy</h4>
-										<p class="text-secondary mb-1">Web Developer</p>
-										<!-- <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-										<button class="btn btn-primary">Follow</button>
-										<button class="btn btn-outline-primary">Message</button> -->
-									</div>
+									<?php
+    // Check if the user is logged in
+    if (isset($_SESSION["email"])) {
+        include "db_conn.php"; // Assuming db_conn.php contains your database connection details
+
+        // Retrieve the logged-in user's email from the session
+        $logged_in_email = $_SESSION["email"];
+
+        // Prepare and execute SQL query to select the name of the logged-in user based on their email
+        $sql = "SELECT name FROM tbf_mem WHERE email = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "s", $logged_in_email);
+
+        // Execute SQL statement
+        mysqli_stmt_execute($stmt);
+
+        // Get result set
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Close prepared statement
+        mysqli_stmt_close($stmt);
+
+        // Check if there is a row
+        if (mysqli_num_rows($result) > 0) {
+            // Output the name of the logged-in user
+            $row = mysqli_fetch_assoc($result);
+            ?>
+            <div class="mt-3" name="name">
+                <h4><?php echo htmlspecialchars($row['name']); ?></h4>
+                <p class="text-secondary mb-1">Web Developer</p>
+            </div>
+            <?php
+        } else {
+            // No user found with the provided email
+            echo "No user found with the provided email";
+        }
+
+        // Close database connection
+        mysqli_close($conn);
+    } else {
+        // User is not logged in
+        echo "User not logged in";
+    }
+?>
+
 								</div>
 								<hr class="my-4">
 								<ul class="list-group list-group-flush">
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="fa fa-user" name="name" style="font-size: 20px;"></i> Name</h6>
-										<label value="<?php echo $row['name'] ?>"></label>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="fa fa-id-card-o" style="font-size:20px"></i> User Id</h6>
-										<span class="text-secondary">TBF001</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="fa fa-phone" style="font-size:20px"></i> Mobile Number</h6>
-										<span class="text-secondary">9876543210</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="fa fa-envelope" style="font-size:20px"></i> Email</h6>
-										<span class="text-secondary">jana@gmail.com</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class='fa fa-building' style='font-size:20px'></i> Company Name</h6>
-										<span class="text-secondary">xyz business, Theni</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="fa fa-map-marker" style="font-size:20px"></i> Company Address</h6>
-										<span class="text-secondary">xyz address, Theni</span>
-									</li>
+								<?php
+   
+
+    // Check if the user is logged in
+    if (isset($_SESSION["email"])) {
+        include "db_conn.php"; // Assuming db_conn.php contains your database connection details
+
+        // Retrieve the logged-in user's email from the session
+        $logged_in_email = $_SESSION["email"];
+
+        // Prepare and execute SQL query to select data based on the logged-in user's email
+        $sql = "SELECT * FROM tbf_mem WHERE email = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "s", $logged_in_email);
+
+        // Execute SQL statement
+        mysqli_stmt_execute($stmt);
+
+        // Get result set
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Close prepared statement
+        mysqli_stmt_close($stmt);
+
+        // Check if there is a row
+        if (mysqli_num_rows($result) > 0) {
+            // Output data for the logged-in user
+            $row = mysqli_fetch_assoc($result);
+            ?>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa fa-user" style="font-size: 20px;"></i> Name</h6>
+                <span class="text-secondary"><?php echo htmlspecialchars($row['name']); ?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa fa-id-card-o" style="font-size:20px"></i> User Id</h6>
+                <span class="text-secondary"><?php echo htmlspecialchars($row['user_id']); ?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa fa-phone" style="font-size:20px"></i> Mobile Number</h6>
+                <span class="text-secondary"><?php echo htmlspecialchars($row['mobile']); ?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa fa-envelope" style="font-size:20px"></i> Email</h6>
+                <span class="text-secondary"><?php echo htmlspecialchars($row['email']); ?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class='fa fa-building' style='font-size:20px'></i> Company Name</h6>
+                <span class="text-secondary"><?php echo htmlspecialchars($row['bname']); ?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa fa-map-marker" style="font-size:20px"></i> Company Address</h6>
+                <span class="text-secondary"><?php echo htmlspecialchars($row['baddress']); ?></span>
+            </li>
+            <?php
+        } else {
+            // No user found with the provided email
+            echo "No user found with the provided email";
+        }
+
+        // Close database connection
+        mysqli_close($conn);
+    } else {
+        // User is not logged in
+        echo "User not logged in";
+    }
+?>
+
+
 								</ul>
 							</div>
 						   </div>

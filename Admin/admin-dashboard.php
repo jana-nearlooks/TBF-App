@@ -23,7 +23,7 @@
 	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="../assets/css/bootstrap-extended.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
-	<link href="..../assets/css/app.css" rel="stylesheet">
+	<link href="../assets/css/app.css" rel="stylesheet">
 	<link href="../assets/css/icons.css" rel="stylesheet">
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="../assets/css/dark-theme.css"/>
@@ -697,7 +697,7 @@
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" a href="../logout.php"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
 							</li>
 						</ul>
 					</div>
