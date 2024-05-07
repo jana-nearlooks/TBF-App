@@ -2,53 +2,50 @@
 include "../db_conn.php";
 
 // Check if s_no is set and is a valid integer
+$s_no = $_GET["s_no"];
 
-    $s_no = $_GET["s_no"];
+if (isset($_POST["btn"])) {
+    // Sanitize and validate user input
+    $user_id = $_POST["user_id"];
+    $name = $_POST["name"];
+    $mobile = $_POST["mobile"];
+    $email = $_POST["email"];
+    $bname = $_POST["bname"];
+    $bcategory = $_POST["bcategory"];
+    $baddress = $_POST["baddress"];
+    $password = $_POST["password"];
+    $repassword = $_POST["repassword"];
 
-    if (isset($_POST["btn"])) {
-        // Sanitize and validate user input
-        $user_id = $_POST["user_id"];
-        $name = $_POST["name"];
-        $mobile = $_POST["mobile"];
-        $email = $_POST["email"];
-        $bname = $_POST["bname"];
-        $bcategory = $_POST["bcategory"];
-        $baddress = $_POST["baddress"];
-        $password = $_POST["password"];
-        $repassword = $_POST["repassword"];
+    // File handling for image
+    $image = $_FILES['image']['name'];
+    $target = "../uploads/".basename($image);
 
-        // Prepare and execute SQL UPDATE statement
-        $stmt = $conn->prepare("UPDATE `tbf_mem` SET `user_id`=?, `name`=?, `mobile`=?, `email`=?, `bname`=?, `bcategory`=?, `baddress`=?, `password`=?, `repassword`=? WHERE s_no=?");
-        $stmt->bind_param("sssssssssi", $user_id, $name, $mobile, $email, $bname, $bcategory, $baddress, $password, $repassword, $s_no);
-        $stmt->execute();
+    // Move uploaded image to desired location
+    move_uploaded_file($_FILES['image']['tmp_name'], $target);
 
-        // Check if the query executed successfully
-        if ($stmt->affected_rows > 0) {
-            header("Location: Admin/members-list.php?msg=Data updated successfully");
-            exit(); // Terminate script after redirection
-        } else {
-            echo "Failed: " . $stmt->error;
-        }
-        $stmt->close();
-    }
-
-    // Retrieve user details for editing
-    $sql = "SELECT * FROM `tbf_mem` WHERE s_no=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $s_no);
+    // Prepare and execute SQL UPDATE statement with image update
+    $stmt = $conn->prepare("UPDATE `tbf_mem` SET `user_id`=?, `name`=?, `mobile`=?, `email`=?, `bname`=?, `bcategory`=?, `baddress`=?, `password`=?, `repassword`=?, `image`=? WHERE s_no=?");
+    $stmt->bind_param("ssssssssssi", $user_id, $name, $mobile, $email, $bname, $bcategory, $baddress, $password, $repassword, $image, $s_no);
     $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+
+    // Check if the query executed successfully
+    if ($stmt->affected_rows > 0) {
+        header("Location: members-list.php?msg=Data updated successfully");
+        exit(); // Terminate script after redirection
+    } else {
+        echo "Failed: " . $stmt->error;
+    }
     $stmt->close();
+}
 
-?>
-
-
-<?php
-include "../db_conn.php";
-$sql = "SELECT * FROM tbf_mem";
-$result=$conn->query($sql);
-$rowCount = $result->num_rows;
+// Retrieve user details for editing
+$sql = "SELECT * FROM `tbf_mem` WHERE s_no=?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $s_no);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$stmt->close();
 ?>
 
 
@@ -68,6 +65,25 @@ $rowCount = $result->num_rows;
     <form action="" method="POST" enctype="multipart/form-data">
       <div class="formbold-form-title">
         <h2 class="">Update Form</h2>
+
+        <!-- HTML form for editing image -->
+
+    
+        <label class="block">
+      <span class="sr-only">Choose photo</span>
+      <input type="file" class="block w-full text-sm text-gray-500
+        file:me-4 file:py-2 file:px-4
+        file:rounded-lg file:border-0
+        file:text-sm file:font-semibold
+        file:bg-blue-600 file:text-white
+        hover:file:bg-blue-700
+        file:disabled:opacity-50 file:disabled:pointer-events-none
+        dark:text-neutral-500
+        dark:file:bg-blue-500
+        dark:hover:file:bg-blue-400
+      ">
+    </label>
+    
         
       </div>
 	  <div class="formbold-input-flex">

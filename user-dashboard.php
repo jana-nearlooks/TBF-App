@@ -10,7 +10,7 @@ if (isset($_SESSION["email"])) {
     $logged_in_email = $_SESSION["email"];
 
     // Prepare and execute SQL query to select data based on the logged-in user's email
-    $sql = "SELECT `user_id`, `name`, `mobile`, `email`, `bname`, `baddress` FROM `tbf_mem` WHERE `email` = ?";
+    $sql = "SELECT `user_id`, `name`, `image`, `mobile`, `email`, `bname`, `baddress` FROM `tbf_mem` WHERE `email` = ?";
 
     // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
@@ -28,9 +28,16 @@ if (isset($_SESSION["email"])) {
     if ($result->num_rows > 0) {
         // Output data of the logged-in user
         $row = $result->fetch_assoc();
-        echo "user_id: " . $row["user_id"];
-        echo "name: " . $row["name"];
-        echo "email: " . $row["email"];
+        echo "user_id: " . $row["user_id"] . "<br>";
+        echo "name: " . $row["name"] . "<br>";
+        echo "email: " . $row["email"] . "<br>";
+        // Check if image data exists
+        if (!empty($row["image"])) {
+            // Output image
+            echo '<img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" />';
+        } else {
+            echo "No image found for this user.<br>";
+        }
         // Output other fields as needed
     } else {
         echo "No user found with the provided email";
@@ -45,6 +52,7 @@ if (isset($_SESSION["email"])) {
 // Close the database connection
 $conn->close();
 ?>
+
 
 
 <?php
@@ -723,8 +731,7 @@ $rowCount = $result->num_rows;
 					</div>
 					<div class="user-box dropdown px-3">
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="assets/user.png" class="user-img" alt="user avatar">
-							<div class="user-info">
+							
 							<?php
     // Check if the user is logged in
     if (isset($_SESSION["email"])) {
@@ -734,7 +741,7 @@ $rowCount = $result->num_rows;
         $logged_in_email = $_SESSION["email"];
 
         // Prepare and execute SQL query to select the name of the logged-in user based on their email
-        $sql = "SELECT name FROM tbf_mem WHERE email = ?";
+        $sql = "SELECT * FROM tbf_mem WHERE email = ?";
         $stmt = mysqli_prepare($conn, $sql);
 
         // Bind parameters
@@ -754,6 +761,9 @@ $rowCount = $result->num_rows;
             // Output the name of the logged-in user
             $row = mysqli_fetch_assoc($result);
             ?>
+
+			<img src=" uploads/<?php echo htmlspecialchars($row["image"]); ?>" class="user-img" alt="user avatar">
+				<div class="user-info">
             <div class="mt-3" name="name">
                 <p><?php echo htmlspecialchars($row['name']); ?></p>
             </div>
@@ -799,6 +809,7 @@ $rowCount = $result->num_rows;
 		<div class="page-wrapper">
 			<div class="page-content">
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+				<div class="mt-3" name="name">
 				<?php
    
     // Check if the user is logged in
@@ -829,9 +840,7 @@ $rowCount = $result->num_rows;
             // Output the name of the logged-in user
             $row = mysqli_fetch_assoc($result);
             ?>
-            <div class="mt-3" name="name">
-			<div class="breadcrumb-title pe-3">Welcome&nbsp;<?php echo htmlspecialchars($row['name']); ?></div>
-             
+			<div class="breadcrumb-title pe-3">Welcome <?php echo htmlspecialchars($row['name']); ?></div>
             </div>
             <?php
         } else {
@@ -846,8 +855,6 @@ $rowCount = $result->num_rows;
         echo "User not logged in";
     }
 ?>
-
-					
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
@@ -862,21 +869,7 @@ $rowCount = $result->num_rows;
 
 			
 				<div class="row row-cols-1 row-cols-md-2 row-cols-xl-5">
-                   <div class="col">
-					 <div class="card radius-10 border-start border-0 border-4 border-info">
-						<div class="card-body">
-							<div class="d-flex align-items-center">
-								<div>
-									<p class="mb-0 text-secondary">Overall Progress</p>
-									<h4 class="my-1 text-info">4805</h4>
-									<p class="mb-0 font-13">+2.5% from last week</p>
-								</div>
-								<div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto"><i class='bx bxs-cart'></i>
-								</div>
-							</div>
-						</div>
-					 </div>
-				   </div>
+                   
 				   <div class="col">
 					<div class="card radius-10 border-start border-0 border-4 border-danger">
 					   <div class="card-body">
@@ -1305,9 +1298,8 @@ $rowCount = $result->num_rows;
 							</div>
 							<form action="" method="POST" enctype="multipart/form-data">
 							<div class="card-body">
-								<div class="d-flex flex-column align-items-center text-center">
-									<img src="assets/user.png" alt="Admin" class="rounded-circle p-1 bg-gradient-bloody" width="110">
-									<?php
+							
+							<?php
     // Check if the user is logged in
     if (isset($_SESSION["email"])) {
         include "db_conn.php"; // Assuming db_conn.php contains your database connection details
@@ -1315,9 +1307,10 @@ $rowCount = $result->num_rows;
         // Retrieve the logged-in user's email from the session
         $logged_in_email = $_SESSION["email"];
 
-        // Prepare and execute SQL query to select the name of the logged-in user based on their email
-        $sql = "SELECT name FROM tbf_mem WHERE email = ?";
+        // Prepare and execute SQL query to select the name and image of the logged-in user based on their email
+        $sql = "SELECT * FROM tbf_mem WHERE email =?";
         $stmt = mysqli_prepare($conn, $sql);
+
 
         // Bind parameters
         mysqli_stmt_bind_param($stmt, "s", $logged_in_email);
@@ -1333,13 +1326,16 @@ $rowCount = $result->num_rows;
 
         // Check if there is a row
         if (mysqli_num_rows($result) > 0) {
-            // Output the name of the logged-in user
+            // Output the name and image of the logged-in user
             $row = mysqli_fetch_assoc($result);
-            ?>
-            <div class="mt-3" name="name">
-                <h4><?php echo htmlspecialchars($row['name']); ?></h4>
-                <p class="text-secondary mb-1">Web Developer</p>
-            </div>
+
+           ?>		
+		   <div class="d-flex flex-column align-items-center text-center" name="image">
+		   <img src="uploads/<?php echo htmlspecialchars($row["image"]); ?>" name="image" alt="" class="rounded-circle p-1 bg-gradient-bloody" width="110">
+<div class="mt-3" name="name">
+    <h4><?php echo htmlspecialchars($row['name']);?></h4>
+    <p class="text-secondary mb-1">Web Developer</p>
+</div>
             <?php
         } else {
             // No user found with the provided email
