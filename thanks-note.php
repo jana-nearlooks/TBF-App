@@ -1,5 +1,11 @@
 <?php
 include "db_conn.php";
+session_start();
+?>
+
+
+<?php
+include "db_conn.php";
 
 if(isset($_POST["submit"])) {
     $id = $_POST['id'];
@@ -23,6 +29,7 @@ if(isset($_POST["submit"])) {
     }
     
 ?>
+
 
 <?php
 // Include the database connection file
@@ -77,10 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-<?php
 
-
-?>
 
 <!doctype html>
 <html lang="en">
@@ -766,11 +770,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					</div>
 					<div class="user-box dropdown px-3">
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="assets/user.png" class="user-img" alt="user avatar">
-							<div class="user-info">
-								<p class="user-name mb-0">Janakrishnamoorthy</p>
-								<p class="designattion mb-0">Web Developer</p>
-							</div>
+						<?php
+     
+    // Check if the user is logged in
+    if (isset($_SESSION["email"]))
+	{
+        include "db_conn.php"; // Assuming db_conn.php contains your database connection details
+           
+        // Retrieve the logged-in user's email from the session
+        $logged_in_email = $_SESSION["email"];
+
+        // Prepare and execute SQL query to select the name of the logged-in user based on their email
+        $sql = "SELECT * FROM tbf_mem WHERE email = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "s", $logged_in_email);
+
+        // Execute SQL statement
+        mysqli_stmt_execute($stmt);
+
+        // Get result set
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Close prepared statement
+        mysqli_stmt_close($stmt);
+
+        // Check if there is a row
+        if (mysqli_num_rows($result) > 0) {
+            // Output the name of the logged-in user
+            $row = mysqli_fetch_assoc($result);
+            ?>
+
+			<img src=" uploads/<?php echo $row["image"]; ?>" class="user-img" alt="user avatar">&nbsp;
+				<div class="user-info">
+            <div class="mt-3" name="name">
+                <p><?php echo $row['name']; ?></p>
+            </div>
+   <?php
+		}
+		}
+		?>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
 							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
@@ -839,6 +879,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <div class="col-md-6">
                                                 <label for="bsValidation3" class="form-label">Select a member from your connection:</label>
                                                 <select class="form-control" name="name" id="">
+													<option selected="" disabled="" >Select the member</option>
     											<?php
     												$sql = "SELECT name FROM tbf_mem;";
     												$result = $GLOBALS['conn']->query($sql);
@@ -846,7 +887,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        											 // output data of each row
        												 while($row = $result->fetch_assoc()) {
            								 				$name = $row['name'];
-           											 echo "<option value=''>$name</option>";
+           											 echo "<option value='$name'>$name</option>";
        												 }
    													 }
     													?>
@@ -857,7 +898,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="bsValidation3" class="form-label">Business Category:</label>
-                                                <select id="bsValidation11" class="form-select" name="bcategory"  required="">
+                                                <select id="bsValidation11" class="form-select" name="bcategory" required>
                                                     <option selected="" disabled="" value=""></option>
                                                     <option>Business 1</option>
                                                     <option>Business 2</option>
@@ -869,7 +910,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="bsValidation3" class="form-label">For a referral in the amount of:</label>
-                                                <input type="text" class="form-control" id="bsValidation3" placeholder="Enter Amount Details" name="refamount" required="">
+                                                <input type="text" class="form-control" id="bsValidation3" placeholder="Enter Amount Details" name="refamount" required>
                                                 <div class="invalid-feedback">
                                                     Please choose a username.
                                                   </div>
@@ -880,11 +921,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 <div class="d-flex align-items-center gap-3">
                                                     <label for="bsValidation3" class="form-label"> Business Type:</label>
                                                     <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="btype" value="New" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="btype" value="New" required>
                                                         <label class="form-check-label" for="bsValidation6">New</label>
                                                       </div>
                                                       <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="btype" value="Repeat" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="btype" value="Repeat" required>
                                                         <label class="form-check-label" for="bsValidation7">Repeat</label>
                                                       </div>
                                                 </div>
@@ -894,15 +935,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 <div class="d-flex align-items-center gap-3">
                                                     <label for="bsValidation3" class="form-label"> Referral Type:</label>
                                                     <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="reftype" value="Tier 1" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation6" name="reftype" value="Tier 1" required=>
                                                         <label class="form-check-label" for="bsValidation6">Tier 1 (Inside)</label>
                                                       </div>
                                                       <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="reftype" value="Tier 2" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="reftype" value="Tier 2" required>
                                                         <label class="form-check-label" for="bsValidation7">Tier 2 (Outside)</label>
                                                       </div>
                                                       <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="reftype" value="Tier 3" required="">
+                                                        <input type="radio" class="form-check-input" id="bsValidation7" name="reftype" value="Tier 3" required>
                                                         <label class="form-check-label" for="bsValidation7">Tier 3</label>
                                                       </div>
                                                 </div>
@@ -910,14 +951,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                              
                                             <div class="col-md-12">
                                                 <label for="bsValidation13" class="form-label">Comments:</label>
-                                                <textarea class="form-control" id="bsValidation13" placeholder="Enter your comments here!" name="comments" rows="3" required=""></textarea>
+                                                <textarea class="form-control" id="bsValidation13" placeholder="Enter your comments here!" name="comments" rows="3" required></textarea>
                                                 <div class="invalid-feedback">
                                                     Please enter a valid comment.
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="bsValidation14" required="">
+                                                    <input class="form-check-input" type="checkbox" id="bsValidation14" required>
                                                     <label class="form-check-label" for="bsValidation14">Agree to terms and conditions</label>
                                                     <div class="invalid-feedback">
                                                         You must agree before submitting.

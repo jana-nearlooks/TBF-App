@@ -11,7 +11,6 @@ if (isset($_POST["btn"])) {
     $bcategory = $_POST["bcategory"];
     $baddress = $_POST["baddress"];
     $password = $_POST["password"];
-    $repassword = $_POST["repassword"];
 
 	  // Check if image is uploaded
 	  if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0){
@@ -42,7 +41,7 @@ if (isset($_POST["btn"])) {
     }
 
     // Insert data into the database
-    $sql = "INSERT INTO `tbf_mem` (image, name, mobile, email, bname, bcategory, baddress, password, repassword, user_id) VALUES ('$newImageName', '$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$repassword','$user_id')";
+    $sql = "INSERT INTO `tbf_mem` (image, name, mobile, email, bname, bcategory, baddress, password, user_id) VALUES ('$newImageName', '$name', '$mobile', '$email', '$bname', '$bcategory', '$baddress', '$password', '$user_id')";
 
 	if($conn->query($sql) === TRUE) {
         header("Location: members-list.php");
@@ -639,8 +638,7 @@ echo $invoice; // This will output the incremented invoice number
 						</ul>
 					</div>
 					<div class="user-box dropdown px-3">
-						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret"
-							href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="../assets/user.png" class="user-img" alt="user avatar">
 							<div class="user-info">
 								<p class="user-name mb-0">Admin</p>
@@ -648,26 +646,20 @@ echo $invoice; // This will output the incremented invoice number
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-										class="bx bx-user fs-5"></i><span>Profile</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-										class="bx bx-cog fs-5"></i><span>Settings</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-cog fs-5"></i><span>Settings</span></a>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-										class="bx bx-home-circle fs-5"></i><span>Dashboard</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-home-circle fs-5"></i><span>Dashboard</span></a>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-										class="bx bx-dollar-circle fs-5"></i><span>Earnings</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-dollar-circle fs-5"></i><span>Earnings</span></a>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-										class="bx bx-download fs-5"></i><span>Downloads</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-download fs-5"></i><span>Downloads</span></a>
 							</li>
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-										class="bx bx-log-out-circle"></i><span>Logout</span></a>
+							<li><a class="dropdown-item d-flex align-items-center" href="../logout.php"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
 							</li>
 						</ul>
 					</div>
@@ -721,13 +713,10 @@ echo $invoice; // This will output the incremented invoice number
 													class="mb-3"></center>
 
 													<form class="row g-3 needs-validation" novalidate="" method="post" enctype="multipart/form-data">
-													<div class="col-md-12">
-															<label for="bsValidation3" class="form-label">Upload Photo:</label>
-															<input id="" type="file" name="image" accept=".jpg, .png, image/jpeg, image/png" multiple>
-															<div class="invalid-feedback">
-																Please upload a photo.
-															</div>
-														</div>
+													<div class="mb-3">
+  														<label for="formFileMultiple" class="form-label">Upload Photo:</label>
+  														<input class="form-control" type="file" id="formFileMultiple" name="image" multiple>
+													</div>
 														<div class="col-md-6">
 															<label for="bsValidation3" class="form-label">User_Id:</label>
 															<input type="text" class="form-control" id="bsValidation3" placeholder="" value="<?php echo $invoice; ?>" name="user_id" required="" readonly>
@@ -784,14 +773,7 @@ echo $invoice; // This will output the incremented invoice number
 																<input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password" name="password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
 															</div>
 														</div>
-														<div class="col-6">
-															<label for="inputChoosePassword" class="form-label">Re-Enter Password</label>
-															<div class="input-group" id="show_hide_password">
-																<input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password" name="repassword"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
-															</div>
-														</div>
-												  
-											
+														
 													<div class="col-md-12 mt-5">
 															<div class="d-md-flex d-grid align-items-center gap-3">
 																<button type="submit" class="btn btn-primary px-4" name="btn">Submit</button>
@@ -834,7 +816,6 @@ echo $invoice; // This will output the incremented invoice number
 										<th scope="col">Business Category</th>
 										<th scope="col">Business Address</th>
 										<th scope="col">Password</th>
-										<th scope="col">Re-Password</th>
 										<th scope="col">Action</th>
 									</tr>
 								</thead>
@@ -857,9 +838,8 @@ echo $invoice; // This will output the incremented invoice number
 										<td><?php echo $row['bcategory']; ?></td>
 										<td><?php echo $row['baddress']; ?></td>
 										<td><?php echo $row['password']; ?></td>
-										<td><?php echo $row['repassword']; ?></td>
 										<td>
-										  <a href="edit.php?s_no=<?php echo $row['s_no'] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										  <a href="edit.php?s_no=<?php echo $row['s_no'] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										  <a href="delete.php?s_no=<?php echo $row['s_no'] ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
 										</td>
 									 </tr>
@@ -1402,6 +1382,7 @@ echo $invoice; // This will output the incremented invoice number
 	<script src="../assets/plugins/fancy-file-uploader/jquery.iframe-transport.js"></script>
 	<script src="../assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js"></script>
 	<script src="../assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script>
 		$(document).ready(function () {
 			$("#show_hide_password a").on('click', function (event) {
@@ -1437,7 +1418,5 @@ echo $invoice; // This will output the incremented invoice number
 		new PerfectScrollbar(".app-container")
 	</script>
 </body>
-
-
 
 </html>

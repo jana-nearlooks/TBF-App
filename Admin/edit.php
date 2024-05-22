@@ -54,7 +54,6 @@ $stmt->close();
 <!doctype html>
 <html lang="en"> 
 
-<head>
 <div class="formbold-main-wrapper">
   <!-- Author: FormBold Team -->
   <!-- Learn More: https://formbold.com -->
@@ -69,21 +68,10 @@ $stmt->close();
         <!-- HTML form for editing image -->
 
     
-        <label class="block">
-      <span class="sr-only">Choose photo</span>
-      <input type="file" class="block w-full text-sm text-gray-500
-        file:me-4 file:py-2 file:px-4
-        file:rounded-lg file:border-0
-        file:text-sm file:font-semibold
-        file:bg-blue-600 file:text-white
-        hover:file:bg-blue-700
-        file:disabled:opacity-50 file:disabled:pointer-events-none
-        dark:text-neutral-500
-        dark:file:bg-blue-500
-        dark:hover:file:bg-blue-400
-      ">
-    </label>
-    
+                <div class="mb-3">
+  														<label for="formFileMultiple" class="form-label">Upload Photo:</label>
+  														<input class="form-control" type="file" id="formFileMultiple" name="image" multiple>
+													</div>
         
       </div>
 	  <div class="formbold-input-flex">
@@ -326,7 +314,5 @@ $stmt->close();
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
   }
 </style>
-
-
 
 </html>

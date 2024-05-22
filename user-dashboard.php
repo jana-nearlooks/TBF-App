@@ -27,11 +27,11 @@ if (isset($_SESSION["email"])) {
     // Check if any rows were returned
     if ($result->num_rows > 0) {
         // Output data of the logged-in user
-        $row = $result->fetch_assoc();
-        echo "user_id: " . $row["user_id"] . "<br>";
-        echo "name: " . $row["name"] . "<br>";
-        echo "email: " . $row["email"] . "<br>";
-        // Check if image data exists
+        // $row = $result->fetch_assoc();
+        // echo "user_id: " . $row["user_id"] . "<br>";
+        // echo "name: " . $row["name"] . "<br>";
+        // echo "email: " . $row["email"] . "<br>";
+        // // Check if image data exists
         if (!empty($row["image"])) {
             // Output image
             echo '<img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" />';
@@ -768,19 +768,9 @@ $rowCount = $result->num_rows;
                 <p><?php echo htmlspecialchars($row['name']); ?></p>
             </div>
             <?php
-        } else {
-            // No user found with the provided email
-            echo "No user found with the provided email";
-        }
-
-        // Close database connection
-        mysqli_close($conn);
-    } else {
-        // User is not logged in
-        echo "User not logged in";
-    }
-?>
-								
+        } 
+	}
+?>		
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
@@ -810,8 +800,8 @@ $rowCount = $result->num_rows;
 			<div class="page-content">
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
 				<div class="mt-3" name="name">
+				<div class="breadcrumb-title pe-3">
 				<?php
-   
     // Check if the user is logged in
     if (isset($_SESSION["email"])) {
         include "db_conn.php"; // Assuming db_conn.php contains your database connection details
@@ -840,21 +830,13 @@ $rowCount = $result->num_rows;
             // Output the name of the logged-in user
             $row = mysqli_fetch_assoc($result);
             ?>
-			<div class="breadcrumb-title pe-3">Welcome <?php echo htmlspecialchars($row['name']); ?></div>
-            </div>
+			Welcome <?php echo $row['name']; ?></div>
+            
             <?php
-        } else {
-            // No user found with the provided email
-            echo "No user found with the provided email";
         }
-
-        // Close database connection
-        mysqli_close($conn);
-    } else {
-        // User is not logged in
-        echo "User not logged in";
-    }
+	}
 ?>
+                 </div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
