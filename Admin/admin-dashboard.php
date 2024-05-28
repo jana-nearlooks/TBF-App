@@ -804,8 +804,7 @@
 				<div class="row">
                 <div class="col-12">
                     <center><h1>ATTENDANCE MANAGEMENT SYSTEM!</h1></center>
-                    <h3><p style="color:blue">ATTENDANCE OF MONTH: <u><?php echo strtoupper(date("F")); ?></u></P></h3>
-                </div>
+                    </div>
             </div>
 				
 
@@ -813,12 +812,13 @@
             <div class="col-12">
                 <?php include("SmartAttendanceSheet.php"); ?>
             </div> &nbsp;&nbsp;&nbsp;
-            <div class="col-4">
+            <!-- <div class="col-4">
                 <?php include("addingStudents.php"); 
                     echo "<hr>";
                     include("addAttendance.php");
                 ?>
-            </div>
+            </div> -->
+	</div>
 				
 <!-- 
 				<div class="row">

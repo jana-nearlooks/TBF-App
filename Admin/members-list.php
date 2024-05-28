@@ -50,8 +50,27 @@ if (isset($_POST["btn"])) {
         echo "Error: " . $sql. "<br>" . $conn->error;
     }
 
+		 // Send email notification
+		 $to = $email;
+		 $subject = "User Business Registration Confirmation";
+		 $message = "Hello $name,\n\nYour business has been successfully registered with the following details:\n
+					 Business Name: $bname\n
+					 User ID: $user_id\n\n
+					 Thank you for registering your business with us.\n\n
+					 Best regards,\n
+					 Your Company Name";
+		 $headers = "From: batsyxo07@gmail.com";
+	 
+		 if (mail($to, $subject, $message, $headers)) {
+			 echo "Notification email sent successfully.";
+		 } else {
+			 echo "Failed to send notification email.";
+		 }
+
     // Close the connection
     $conn->close();
+
+
 }
 ?>
 

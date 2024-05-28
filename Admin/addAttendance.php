@@ -10,10 +10,10 @@
         </tr>
         <?php
             require_once("../db_conn.php");
-            $fetchingStudents = mysqli_query($conn, "SELECT * FROM attendance_students") OR die(mysqli_error($conn));
+            $fetchingStudents = mysqli_query($conn, "SELECT * FROM tbf_mem") OR die(mysqli_error($conn));
             while($data = mysqli_fetch_assoc($fetchingStudents))
             {
-                $student_name = $data['student_name'];
+                $student_name = $data['name'];
                 $student_id = $data['id'];
         ?>
                 <tr>
