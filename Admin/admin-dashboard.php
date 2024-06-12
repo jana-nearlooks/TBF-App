@@ -102,6 +102,13 @@
 						<div class="menu-title">Referral Report</div>
 					</a>
 				</li>
+				<li>
+					<a href="attendance.php">
+						<div class="parent-icon"><i class='fa fa-file-text-o'></i>
+						</div>
+						<div class="menu-title">Attendance</div>
+					</a>
+				</li>
 
 
 				<li class="menu-label" style="position: absolute; bottom: 0; left: 0; padding: 18%;" >Copyright © | <script>document.write(new Date().getFullYear());</script> TBF</li>
@@ -361,6 +368,7 @@
 									</div>
 								</div>
 							</li>
+							
 
 							<li class="nav-item dropdown dropdown-large">
 								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" data-bs-toggle="dropdown"><span class="alert-count">7</span>
@@ -800,26 +808,7 @@
 					</div>
 				  </div> 
 				</div><!--end row-->
-
-				<div class="row">
-                <div class="col-12">
-                    <center><h1>ATTENDANCE MANAGEMENT SYSTEM!</h1></center>
-                    </div>
-            </div>
-				
-
-				<div class="row">
-            <div class="col-12">
-                <?php include("SmartAttendanceSheet.php"); ?>
-            </div> &nbsp;&nbsp;&nbsp;
-            <!-- <div class="col-4">
-                <?php include("addingStudents.php"); 
-                    echo "<hr>";
-                    include("addAttendance.php");
-                ?>
-            </div> -->
-	</div>
-				
+		
 <!-- 
 				<div class="row">
                    <div class="col-12 col-lg-8 d-flex">

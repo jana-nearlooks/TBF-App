@@ -1,164 +1,127 @@
 <?php 
-require_once("../db_conn.php");
+    require_once("../db_conn.php");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    foreach ($_POST as $memberName => $attendance) {
-        foreach ($attendance as $date => $status) {
-            if (!empty(trim($status))) {
-                $query = "INSERT INTO attendance (member_name, curr_date, attendance) VALUES ('$memberName', '$date', '$status')
-                          ON DUPLICATE KEY UPDATE attendance = '$status'";
-                mysqli_query($conn, $query) OR die(mysqli_error($conn));
-            }
-        }
+    $firstDayOfMonth = date("1-m-Y");
+    $totalDaysInMonth = date("t", strtotime($firstDayOfMonth));
+   
+    // Fetching Students 
+    $fetchingStudents = mysqli_query($conn, "SELECT * FROM attendance_students") OR die(mysqli_error($conn));
+    $totalNumberOfStudents = mysqli_num_rows($fetchingStudents);
+
+    $studentsNamesArray = array();
+    $studentsIDsArray = array();
+    $counter = 0;
+    while($students = mysqli_fetch_assoc($fetchingStudents))
+    {
+        $studentsNamesArray[] = $students['student_name'];
+        $studentsIDsArray[] = $students['id'];
     }
-    echo "Attendance records updated successfully.";
-}
-
-// Fetching members 
-$fetchingmembers = mysqli_query($conn, "SELECT * FROM tbf_mem") OR die(mysqli_error($conn));
-$totalNumberOfmembers = mysqli_num_rows($fetchingmembers);
-
-$membersNamesArray = array();
-while($members = mysqli_fetch_assoc($fetchingmembers)) {
-    $membersNamesArray[] = $members['name'];
-}
-
-// Fetching Existing Attendance Data
-$existingAttendance = array();
-$fetchingAttendance = mysqli_query($conn, "SELECT * FROM attendance") OR die(mysqli_error($conn));
-while($attendance = mysqli_fetch_assoc($fetchingAttendance)) {
-    $existingAttendance[$attendance['member_name']][$attendance['curr_date']] = $attendance['attendance'];
-}
-
-// Define months array
-$months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-
-// Function to get class based on attendance status
-function getStatusClass($status) {
-    switch ($status) {
-        case "P":
-            return "green";
-        case "A":
-            return "red";
-        case "L":
-            return "blue";
-        case "S":
-            return "brown";
-        default:
-            return "";
-    }
-}
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Attendance Table</title>
+    <title>Attendance Report</title>
     <style>
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 10px; text-align: center; border: 1px solid #ddd; cursor: pointer; }
-        .green { background-color: green; color: white; }
-        .red { background-color: red; color: white; }
-        .blue { background-color: blue; color: white; }
-        .brown { background-color: brown; color: white; }
-    </style>
-    <script>
-        function changeAttendance(cell) {
-            const statuses = ["P", "A", "L", "S", " "];
-            const colors = ["green", "red", "blue", "brown", ""];
-            let currentStatus = cell.textContent;
-
-            let index = statuses.indexOf(currentStatus);
-            index = (index + 1) % statuses.length;
-            cell.textContent = statuses[index];
-            cell.className = colors[index];
+        .card {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelector('form').addEventListener('submit', function (event) {
-                const table = document.getElementById('attendanceTable');
-                const inputs = {};
-                
-                for (let row of table.rows) {
-                    for (let cell of row.cells) {
-                        if (cell.hasAttribute('data-member-name')) {
-                            const memberName = cell.getAttribute('data-member-name');
-                            const date = cell.getAttribute('data-date');
-                            const status = cell.textContent;
-                            
-                            if (status.trim()) { // Only add non-empty statuses
-                                if (!inputs[memberName]) {
-                                    inputs[memberName] = {};
-                                }
-                                inputs[memberName][date] = status;
-                            }
-                        }
-                    }
-                }
-                
-                for (const [memberName, attendance] of Object.entries(inputs)) {
-                    for (const [date, status] of Object.entries(attendance)) {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = `${memberName}[${date}]`;
-                        input.value = status;
-                        this.appendChild(input);
-                    }
-                }
-            });
-        });
-    </script>
+        .card-body {
+            max-height: 500px; /* Adjust the height as needed */
+            overflow-y: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        td {
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
 
-<form action="#" method="POST">
-    <div class="card">
-        <div class="card-body">
-            <div class="d-lg-flex align-items-center mb-8 gap-5">
-                <div class="table-responsive mt-3">
-                    <table id="attendanceTable" class="table table-striped table-bordered">
-                        <tr>
-                            <td rowspan="2">Names</td>
-                            <?php 
-                                foreach ($months as $month) {
-                                    echo "<td colspan='3'>$month</td>";
+<div class="card">
+    <div class="card-body">
+        <table id="example2" class="table table-striped table-bordered">
+            <?php 
+                for($i = 1; $i<=$totalNumberOfStudents + 2; $i++)
+                {
+                    if($i == 1)
+                    {
+                        echo "<tr>";
+                        echo "<th rowspan='2'>Names</th>";
+                        for($j = 1; $j<=$totalDaysInMonth; $j++)
+                        {
+                            echo "<th>$j</th>";
+                        }
+                        echo "</tr>";
+                    } else if($i == 2)
+                    {
+                        echo "<tr>";
+                        for($j = 0; $j<$totalDaysInMonth; $j++)
+                        {
+                            echo "<th>" . date("D", strtotime("+$j days", strtotime($firstDayOfMonth))) . "</th>";
+                        }
+                        echo "</tr>";
+                    } else 
+                    {
+                        echo "<tr>";
+                        echo "<td>" . $studentsNamesArray[$counter] . "</td>";
+                        for($j = 1; $j<=$totalDaysInMonth; $j++)
+                        {
+                            $dateOfAttendance = date("Y-m-$j");
+                            $fetchingStudentsAttendance = mysqli_query($conn, "SELECT attendance FROM attendance WHERE student_id = '". $studentsIDsArray[$counter] ."' AND curr_date = '". $dateOfAttendance ."'") OR die(mysqli_error($conn));
+                            
+                            $isAttendanceAdded = mysqli_num_rows($fetchingStudentsAttendance);
+                            if($isAttendanceAdded > 0)
+                            {
+                                $studentAttendance = mysqli_fetch_assoc($fetchingStudentsAttendance);
+                                if($studentAttendance['attendance'] == "P")
+                                {
+                                    $color = "green";
+                                }else if($studentAttendance['attendance'] == "A")
+                                {
+                                    $color = "red";
+                                }else if($studentAttendance['attendance'] == "S")
+                                {
+                                    $color = "yellow";
+                                }else if($studentAttendance['attendance'] == "L")
+                                {
+                                    $color = "blue";
                                 }
-                            ?>
-                        </tr>
-                        <tr>
-                            <?php 
-                                foreach ($months as $month) {
-                                    for ($j = 1; $j <= 3; $j++) {
-                                        echo "<td><input type='date'/></td>";
-                                    }
-                                }
-                            ?>
-                        </tr>
 
-                        <?php 
-                            for($i = 0; $i < $totalNumberOfmembers; $i++) {
-                                echo "<tr>";
-                                echo "<td>" . $membersNamesArray[$i] . "</td>";
-                                
-                                foreach ($months as $index => $month) {
-                                    for ($j = 1; $j <= 3; $j++) {
-                                        $date = sprintf("2024-%02d-%02d", $index + 1, $j); // Generate date in YYYY-MM-DD format
-                                        $status = isset($existingAttendance[$membersNamesArray[$i]][$date]) ? $existingAttendance[$membersNamesArray[$i]][$date] : "";
-                                        $class = getStatusClass($status);
-                                        echo "<td onclick='changeAttendance(this)' data-member-name='" . $membersNamesArray[$i] . "' data-date='$date' class='$class'>$status</td>";
-                                    }
-                                }
-                                echo "</tr>";
+                                echo "<td style='background-color: $color; color:white'>" . $studentAttendance['attendance'] . "</td>";
+                            }else {
+                                echo "<td></td>";
                             }
-                        ?>
-                    </table>
-                </div>
-            </div>
-        </div>
+                        }
+                        echo "</tr>";
+                        $counter++;
+                    }
+                }
+            ?>
+        </table>
     </div>
-    <button type="submit">Submit Attendance</button>
-</form>
+</div>
+
+<script>
+    // Add any JavaScript you need here for additional interactivity
+</script>
 
 </body>
 </html>

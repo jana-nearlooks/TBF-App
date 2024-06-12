@@ -1,5 +1,4 @@
-<div class="card">
-<table id="example2" class="table table-striped table-bordered">
+<table border="3" cellspacing="0">
     <form method="POST">
         <tr>
             <th>Member Name</th>
@@ -10,10 +9,10 @@
         </tr>
         <?php
             require_once("../db_conn.php");
-            $fetchingStudents = mysqli_query($conn, "SELECT * FROM tbf_mem") OR die(mysqli_error($conn));
+            $fetchingStudents = mysqli_query($conn, "SELECT * FROM attendance_students") OR die(mysqli_error($conn));
             while($data = mysqli_fetch_assoc($fetchingStudents))
             {
-                $student_name = $data['name'];
+                $student_name = $data['student_name'];
                 $student_id = $data['id'];
         ?>
                 <tr>
@@ -61,7 +60,7 @@
 
             foreach($studentPresent as $atd)
             {
-                mysqli_query($conn, "INSERT INTO attendance(student_id, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
+                mysqli_query($conn, "INSERT INTO attendance(student_id, student_name, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
             }
 
         }
@@ -73,7 +72,7 @@
 
             foreach($studentAbsent as $atd)
             {
-                mysqli_query($conn, "INSERT INTO attendance(student_id, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
+                mysqli_query($conn, "INSERT INTO attendance(student_id, student_name, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
             }
         }
 
@@ -84,7 +83,7 @@
 
             foreach($studentLeave as $atd)
             {
-                mysqli_query($conn, "INSERT INTO attendance(student_id, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
+                mysqli_query($conn, "INSERT INTO attendance(student_id, student_name, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
             }
         }
 
@@ -95,7 +94,7 @@
 
             foreach($studentHoliday as $atd)
             {
-                mysqli_query($conn, "INSERT INTO attendance(student_id, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
+                mysqli_query($conn, "INSERT INTO attendance(student_id, student_name, curr_date, attendance_month, attendance_year, attendance) VALUES('" . $atd . "', '". $selected_date ."', '". $attendance_month ."', '". $attendance_year ."', '". $attendance ."')") OR die(mysqli_error($conn));
             }
         }
 
@@ -105,7 +104,7 @@
 
     }
 ?>
-</div>
+
 
 
 
