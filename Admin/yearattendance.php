@@ -8,15 +8,10 @@ if (!file_exists($vendorAutoloadPath)) {
 
 require_once($vendorAutoloadPath);
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use FPDF\FPDF;
-
 // Handle form submission for filtering
 $selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
 $selectedStudent = isset($_GET['student']) ? $_GET['student'] : '';
 $absenteeFilter = isset($_GET['absentee_filter']) ? $_GET['absentee_filter'] : '';
-$exportFormat = isset($_GET['export']) ? $_GET['export'] : '';
 
 // Fetching Students
 $studentQuery = "SELECT * FROM attendance_students";
@@ -25,14 +20,13 @@ if ($selectedStudent) {
 }
 
 $fetchingStudents = mysqli_query($conn, $studentQuery) OR die(mysqli_error($conn));
-$totalNumberOfStudents = mysqli_num_rows($fetchingStudents);
-
 $studentsNamesArray = array();
 $studentsIDsArray = array();
 while($students = mysqli_fetch_assoc($fetchingStudents)) {
     $studentsNamesArray[] = $students['student_name'];
     $studentsIDsArray[] = $students['id'];
 }
+$totalNumberOfStudents = count($studentsNamesArray);
 
 // Total number of students for pagination
 $totalStudentsQuery = "SELECT COUNT(*) as count FROM attendance_students";
@@ -82,6 +76,9 @@ $totalStudents = $totalStudentsRow['count'];
             color: white;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="card">
@@ -101,8 +98,8 @@ $totalStudents = $totalStudentsRow['count'];
                 <label for="absentee_filter">Show Absentees Only:</label>
                 <input type="checkbox" id="absentee_filter" name="absentee_filter" value="1" <?php if ($absenteeFilter) echo 'checked'; ?>>
                 <button type="submit">Filter</button>
-                <button type="submit" name="export" value="pdf">Export to PDF</button>
-                <button type="submit" name="export" value="excel">Export to Excel</button>
+                <button type="button" onclick="exportToPDF()">Export to PDF</button>
+                <button type="button" onclick="exportToExcel()">Export to Excel</button>
             </form>
         </div>
     </div>
@@ -136,7 +133,7 @@ $totalStudents = $totalStudentsRow['count'];
                     return $saturdays;
                 } 
 
-                $table = "<table id='attendanceTable'>";
+                $table = "<table id='attendanceTableHTML'>";
                 $table .= "<thead><tr><th>Names</th>";
                 $year = date('Y');
                 $allDates = [];
@@ -200,62 +197,53 @@ $totalStudents = $totalStudentsRow['count'];
 
                 $table .= "</tbody></table>";
 
-                if ($exportFormat) {
-                    if ($exportFormat == 'pdf') {
-                        exportToPDF($table);
-                    } elseif ($exportFormat == 'excel') {
-                        exportToExcel($studentsNamesArray, $studentsIDsArray, $allDates);
-                    }
-                } else {
-                    echo $table;
-                }
-
-                function exportToPDF($table) {
-                    $pdf = new FPDF();
-                    $pdf->AddPage();
-                    $pdf->SetFont('Arial', 'B', 12);
-                    $pdf->WriteHTML($table);
-                    $pdf->Output();
-                    exit;
-                }
-
-                function exportToExcel($studentsNamesArray, $studentsIDsArray, $allDates) {
-                    $spreadsheet = new Spreadsheet();
-                    $sheet = $spreadsheet->getActiveSheet();
-
-                    $sheet->setCellValue('A1', 'Names');
-                    $col = 'B';
-                    foreach ($allDates as $date) {
-                        $sheet->setCellValue($col . '1', date("F j", strtotime($date)));
-                        $col++;
-                    }
-
-                    $row = 2;
-                    foreach ($studentsNamesArray as $index => $name) {
-                        $sheet->setCellValue('A' . $row, $name);
-                        $col = 'B';
-                        foreach ($allDates as $date) {
-                            $studentID = $studentsIDsArray[$index];
-                            $attendanceQuery = "SELECT attendance FROM attendance WHERE student_id = '$studentID' AND curr_date = '$date'";
-                            $result = mysqli_query($conn, $attendanceQuery) OR die(mysqli_error($conn));
-                            $attendance = mysqli_fetch_assoc($result)['attendance'] ?? '';
-                            $sheet->setCellValue($col . $row, $attendance);
-                            $col++;
-                        }
-                        $row++;
-                    }
-
-                    $writer = new Xlsx($spreadsheet);
-                    $filePath = 'attendance.xlsx';
-                    $writer->save($filePath);
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment; filename="attendance.xlsx"');
-                    readfile($filePath);
-                    exit;
-                }
+                echo $table;
                 ?>
             </div>
         </div>
     </div>
+    <script>
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const tableHTML = document.getElementById("attendanceTableHTML");
+            const pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+            const tableWidth = tableHTML.scrollWidth;
+
+            const orientation = tableWidth > pageWidth ? 'landscape' : 'portrait';
+            const docLandscape = new jsPDF(orientation);
+
+            docLandscape.text("Attendance Report", 20, 10);
+
+            const headers = Array.from(tableHTML.querySelectorAll("thead tr th")).map(th => th.innerText);
+            const data = Array.from(tableHTML.querySelectorAll("tbody tr")).map(tr => 
+                Array.from(tr.querySelectorAll("td")).map(td => td.innerText)
+            );
+
+            docLandscape.autoTable({
+                head: [headers],
+                body: data,
+                theme: 'grid',
+                // styles: {
+                //     fillColor: function (rowIndex, node, columnIndex) {
+                //         return node.style.backgroundColor;
+                //     },
+                //     textColor: function (rowIndex, node, columnIndex) {
+                //         return node.style.color;
+                //     }
+                // }
+            });
+
+            docLandscape.save("attendance.pdf");
+        }
+
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(document.getElementById("attendanceTableHTML"));
+            XLSX.utils.book_append_sheet(wb, ws, "Attendance Report");
+            XLSX.writeFile(wb, "attendance.xlsx");
+        }
+    </script>
 </body>
 </html>
